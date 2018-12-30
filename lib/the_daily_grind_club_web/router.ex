@@ -16,7 +16,7 @@ defmodule TheDailyGrindClubWeb.Router do
   scope "/", TheDailyGrindClubWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", AthleteController, :index
   end
 
   # Other scopes may use custom stacks.

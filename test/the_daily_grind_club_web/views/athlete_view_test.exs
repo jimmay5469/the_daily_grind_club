@@ -1,3 +1,3 @@
-defmodule TheDailyGrindClubWeb.PageViewTest do
+defmodule TheDailyGrindClubWeb.AthleteViewTest do
   use TheDailyGrindClubWeb.ConnCase, async: true
 end
