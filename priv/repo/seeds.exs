@@ -13,7 +13,7 @@
 alias TheDailyGrindClub.Athletes
 
 Athletes.create_athlete(%{
-  strava_id: 1234,
+  strava_id: 17_683_278,
   first_name: "Jimmy",
   last_name: "Lauzau"
 })

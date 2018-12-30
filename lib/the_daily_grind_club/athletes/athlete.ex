@@ -3,14 +3,14 @@ defmodule TheDailyGrindClub.Athletes.Athlete do
   import Ecto.Changeset
 
   schema "athletes" do
+    field :strava_id, :integer
+    field :first_name, :string
+    field :last_name, :string
+    field :activities, :binary
+    field :last_fetch, :naive_datetime
     field :access_token, :string
     field :access_token_expiration, :naive_datetime
-    field :activities, :binary
-    field :first_name, :string
-    field :last_fetch, :naive_datetime
-    field :last_name, :string
     field :refresh_token, :string
-    field :strava_id, :integer
 
     timestamps()
   end

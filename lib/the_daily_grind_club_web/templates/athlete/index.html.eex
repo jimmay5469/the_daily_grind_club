@@ -2,6 +2,6 @@
 
 <ul>
 <%= for athlete <- @athletes do %>
-  <li><%= athlete.first_name %> <%= athlete.last_name %></li>
+  <li><%= athlete.first_name %> <%= athlete.last_name %>: <%= athlete.last_fetch %></li>
 <% end %>
 </ul>

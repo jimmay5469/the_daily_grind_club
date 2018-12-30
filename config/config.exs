@@ -17,6 +17,10 @@ config :the_daily_grind_club, TheDailyGrindClubWeb.Endpoint,
   render_errors: [view: TheDailyGrindClubWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: TheDailyGrindClub.PubSub, adapter: Phoenix.PubSub.PG2]
 
+# Custom configuration
+config :the_daily_grind_club, TheDailyGrindClub.Strava,
+  backend: TheDailyGrindClub.Strava.TestBackend
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
