@@ -28,4 +28,17 @@ defmodule TheDailyGrindClubWeb.AthleteView do
     |> Poison.decode!()
     |> Enum.count()
   end
+
+  def active_time(%Athlete{activities: nil}), do: 0
+
+  def active_time(%Athlete{activities: activities}) do
+    total_minutes =
+      activities
+      |> Poison.decode!()
+      |> Stream.map(& &1["moving_time"])
+      |> Enum.sum()
+      |> div(60)
+
+    "#{div(total_minutes, 60)} hours #{rem(total_minutes, 60)} minutes"
+  end
 end
