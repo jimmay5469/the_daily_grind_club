@@ -73,3 +73,5 @@ config :the_daily_grind_club, TheDailyGrindClub.Repo,
   database: "the_daily_grind_club_dev",
   hostname: "localhost",
   pool_size: 10
+
+import_config "dev.secret.exs"
