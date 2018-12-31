@@ -10,6 +10,9 @@
   <body>
     <header>
       <section class="container">
+        <%= if Plug.Conn.get_session(@conn, :athlete_id) do %>
+          <%= link("logout", to: Routes.athlete_path(TheDailyGrindClubWeb.Endpoint, :logout)) %>
+        <% end %>
         <h1 class="phx-logo">
           The Daily Grind Club
         </h1>
@@ -18,6 +21,9 @@
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= if Plug.Conn.get_session(@conn, :athlete_id) == nil do %>
+        <a href="<%= strava_login_url %>">Connect to Strava</a>
+      <% end %>
       <%= render @view_module, @view_template, assigns %>
     </main>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>

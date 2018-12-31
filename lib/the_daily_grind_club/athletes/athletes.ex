@@ -37,6 +37,8 @@ defmodule TheDailyGrindClub.Athletes do
   """
   def get_athlete!(id), do: Repo.get!(Athlete, id)
 
+  def get_athlete_by_strava_id(strava_id), do: Repo.get_by(Athlete, strava_id: strava_id)
+
   @doc """
   Creates a athlete.
 

@@ -17,6 +17,8 @@ defmodule TheDailyGrindClubWeb.Router do
     pipe_through :browser
 
     get "/", AthleteController, :index
+    get "/token_exchange", AthleteController, :token_exchange
+    get "/logout", AthleteController, :logout
   end
 
   # Other scopes may use custom stacks.
