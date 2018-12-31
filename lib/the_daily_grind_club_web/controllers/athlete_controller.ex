@@ -2,11 +2,18 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   use TheDailyGrindClubWeb, :controller
 
   alias TheDailyGrindClub.Athletes
+  alias TheDailyGrindClub.Strava
 
   def index(conn, _params) do
     case get_session(conn, :athlete_id) do
-      nil -> render(conn, "index.html", athletes: [])
-      _athlete_id -> render(conn, "index.html", athletes: Athletes.list_athletes())
+      nil ->
+        render(conn, "index.html", athletes: [])
+
+      athlete_id ->
+        case athlete_id |> Athletes.get_athlete!() |> Strava.is_authorized?() do
+          false -> render(conn, "index.html", athletes: [])
+          true -> render(conn, "index.html", athletes: Athletes.list_athletes())
+        end
     end
   end
 
@@ -30,19 +37,27 @@ defmodule TheDailyGrindClubWeb.AthleteController do
 
     response_body = Poison.decode!(response.body)
 
-    case Athletes.get_athlete_by_strava_id(response_body["athlete"]["id"]) do
-      nil ->
-        redirect(conn, to: "/")
+    {:ok, athlete} =
+      case Athletes.get_athlete_by_strava_id(response_body["athlete"]["id"]) do
+        nil ->
+          Athletes.create_athlete(%{
+            strava_id: response_body["athlete"]["id"],
+            first_name: response_body["athlete"]["firstname"],
+            last_name: response_body["athlete"]["lastname"],
+            access_token: response_body["access_token"]
+          })
 
-      athlete ->
-        Athletes.update_athlete(athlete, %{
-          access_token: response_body["access_token"]
-        })
+        athlete ->
+          Athletes.update_athlete(athlete, %{
+            first_name: response_body["athlete"]["firstname"],
+            last_name: response_body["athlete"]["lastname"],
+            access_token: response_body["access_token"]
+          })
+      end
 
-        conn
-        |> put_session(:athlete_id, athlete.id)
-        |> redirect(to: "/")
-    end
+    conn
+    |> put_session(:athlete_id, athlete.id)
+    |> redirect(to: "/")
   end
 
   def logout(conn, _params) do

@@ -1,7 +1,7 @@
 defmodule TheDailyGrindClub.Strava.StravaBackend do
   alias TheDailyGrindClub.Athletes.Athlete
 
-  def fetch_athlete_activities(%Athlete{access_token: nil}), do: []
+  def fetch_athlete_activities(%Athlete{access_token: nil}), do: nil
 
   def fetch_athlete_activities(%Athlete{access_token: access_token} = athlete, starting_page \\ 1) do
     {:ok, jan_1, _} = DateTime.from_iso8601("#{Date.utc_today().year}-01-01T00:00:00Z")
@@ -23,5 +23,19 @@ defmodule TheDailyGrindClub.Strava.StravaBackend do
     else
       activities
     end
+  end
+
+  def fetch_athlete(%Athlete{access_token: nil}), do: nil
+
+  def fetch_athlete(%Athlete{access_token: access_token}) do
+    {:ok, response} =
+      HTTPoison.get(
+        "https://www.strava.com/api/v3/athlete",
+        [Authorization: "Bearer #{access_token}"],
+        timeout: 50_000,
+        recv_timeout: 50_000
+      )
+
+    Poison.decode!(response.body)
   end
 end

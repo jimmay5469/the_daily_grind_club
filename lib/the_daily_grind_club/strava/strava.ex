@@ -19,4 +19,10 @@ defmodule TheDailyGrindClub.Strava do
       last_fetch: NaiveDateTime.utc_now()
     })
   end
+
+  def is_authorized?(%Athlete{} = athlete) do
+    @config[:backend].fetch_athlete(athlete)["clubs"]
+    |> Stream.map(& &1["id"])
+    |> Enum.member?(493_369)
+  end
 end
