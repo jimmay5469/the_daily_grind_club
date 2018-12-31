@@ -13,7 +13,7 @@ defmodule TheDailyGrindClub.Strava do
     update_athlete_activities(athlete, activities)
   end
 
-  def update_athlete_activities(%Athlete{} = athlete, [%{} | _] = activities) do
+  def update_athlete_activities(%Athlete{} = athlete, activities) do
     Athletes.update_athlete(athlete, %{
       activities: Poison.encode!(activities),
       last_fetch: NaiveDateTime.utc_now()

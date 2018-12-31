@@ -19,7 +19,7 @@ config :the_daily_grind_club, TheDailyGrindClubWeb.Endpoint,
 
 # Custom configuration
 config :the_daily_grind_club, TheDailyGrindClub.Strava,
-  backend: TheDailyGrindClub.Strava.TestBackend
+  backend: TheDailyGrindClub.Strava.StravaBackend
 
 # Configures Elixir's Logger
 config :logger, :console,
