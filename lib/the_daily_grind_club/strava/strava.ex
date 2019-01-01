@@ -24,8 +24,12 @@ defmodule TheDailyGrindClub.Strava do
   def is_authorized?(%Athlete{} = athlete) do
     athlete = @config[:backend].refresh_access_token(athlete)
 
-    @config[:backend].fetch_athlete(athlete)["clubs"]
-    |> Stream.map(& &1["id"])
-    |> Enum.member?(493_369)
+    if @config[:backend].fetch_athlete(athlete)["clubs"] do
+      @config[:backend].fetch_athlete(athlete)["clubs"]
+      |> Stream.map(& &1["id"])
+      |> Enum.member?(493_369)
+    else
+      false
+    end
   end
 end
