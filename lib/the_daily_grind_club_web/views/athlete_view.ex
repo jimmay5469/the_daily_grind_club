@@ -29,7 +29,7 @@ defmodule TheDailyGrindClubWeb.AthleteView do
     |> Enum.count()
   end
 
-  def active_time(%Athlete{activities: nil}), do: 0
+  def active_time(%Athlete{activities: nil}), do: "0 hours 0 minutes"
 
   def active_time(%Athlete{activities: activities}) do
     total_minutes =

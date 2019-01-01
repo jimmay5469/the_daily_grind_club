@@ -9,7 +9,7 @@ defmodule TheDailyGrindClub.Athletes.Athlete do
     field :activities, :binary
     field :last_fetch, :naive_datetime
     field :access_token, :string
-    field :access_token_expiration, :naive_datetime
+    field :access_token_expiration, :integer
     field :refresh_token, :string
 
     timestamps()

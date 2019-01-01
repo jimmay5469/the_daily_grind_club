@@ -9,6 +9,7 @@ defmodule TheDailyGrindClub.Strava do
   end
 
   def fetch_athlete_activities(%Athlete{} = athlete) do
+    athlete = @config[:backend].refresh_access_token(athlete)
     activities = @config[:backend].fetch_athlete_activities(athlete)
     update_athlete_activities(athlete, activities)
   end
@@ -21,6 +22,8 @@ defmodule TheDailyGrindClub.Strava do
   end
 
   def is_authorized?(%Athlete{} = athlete) do
+    athlete = @config[:backend].refresh_access_token(athlete)
+
     @config[:backend].fetch_athlete(athlete)["clubs"]
     |> Stream.map(& &1["id"])
     |> Enum.member?(493_369)

@@ -31,6 +31,7 @@ defmodule TheDailyGrindClubWeb.AthleteController do
              Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Strava)[
                :strava_client_secret
              ],
+           grant_type: "authorization_code",
            code: code
          ]}
       )
@@ -44,14 +45,18 @@ defmodule TheDailyGrindClubWeb.AthleteController do
             strava_id: response_body["athlete"]["id"],
             first_name: response_body["athlete"]["firstname"],
             last_name: response_body["athlete"]["lastname"],
-            access_token: response_body["access_token"]
+            access_token: response_body["access_token"],
+            access_token_expiration: response_body["expires_at"],
+            refresh_token: response_body["refresh_token"]
           })
 
         athlete ->
           Athletes.update_athlete(athlete, %{
             first_name: response_body["athlete"]["firstname"],
             last_name: response_body["athlete"]["lastname"],
-            access_token: response_body["access_token"]
+            access_token: response_body["access_token"],
+            access_token_expiration: response_body["expires_at"],
+            refresh_token: response_body["refresh_token"]
           })
       end
 
