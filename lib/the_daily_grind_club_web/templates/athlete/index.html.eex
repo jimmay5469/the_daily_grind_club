@@ -1,8 +1,8 @@
-<%= for athlete <- @athletes do %>
-  <div>
-    <strong><%= athlete.first_name %> <%= athlete.last_name %></strong>: <%= active_days(athlete) %>/<span data-day-of-year></span> days this year (<%= active_time(athlete) %>)
-  </div>
-<% end %>
-<%= if Plug.Conn.get_session(@conn, :athlete_id) && Enum.count(@athletes) == 0 do %>
-  You need to join <a href="https://www.strava.com/clubs/thedailygrindclub">The Daily Grind Club</a> on Strava to use this site.
-<% end %>
+<div
+  data-react-app
+  data-athlete-id="<%= Plug.Conn.get_session(@conn, :athlete_id) %>"
+  data-login-url="<%= strava_login_url %>"
+  data-logout-url="<%= Routes.athlete_path(TheDailyGrindClubWeb.Endpoint, :logout) %>"
+  data-athletes="<%= athletes_json(@athletes) %>"
+>
+</div>

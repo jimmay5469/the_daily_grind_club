@@ -3,28 +3,46 @@ defmodule TheDailyGrindClubWeb.AthleteView do
 
   alias TheDailyGrindClub.Athletes.Athlete
 
+  def strava_login_url do
+    "https://www.strava.com/oauth/authorize?client_id=#{
+      Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Strava)[:strava_client_id]
+    }&response_type=code&redirect_uri=#{
+      Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Strava)[:strava_redirect_url]
+    }&scope=read_all,profile:read_all,activity:read_all&approval_prompt=force"
+  end
+
+  def athletes_json(athletes) do
+    athletes
+    |> Enum.map(
+      &%{
+        stravaId: &1.strava_id,
+        firstName: &1.first_name,
+        lastName: &1.last_name,
+        activeDays: active_days(&1)
+      }
+    )
+    |> Poison.encode!()
+  end
+
   def active_days(%Athlete{activities: nil}), do: 0
 
   def active_days(%Athlete{activities: activities}) do
     activities
     |> Poison.decode!()
-    |> Stream.map(& &1["start_date_local"])
-    |> Stream.map(&NaiveDateTime.from_iso8601!(&1))
-    |> Stream.map(&NaiveDateTime.to_date(&1))
-    |> Stream.uniq()
-    |> Enum.count()
-  end
-
-  def active_time(%Athlete{activities: nil}), do: "0 hours 0 minutes"
-
-  def active_time(%Athlete{activities: activities}) do
-    total_minutes =
-      activities
-      |> Poison.decode!()
-      |> Stream.map(& &1["moving_time"])
-      |> Enum.sum()
-      |> div(60)
-
-    "#{div(total_minutes, 60)} hours #{rem(total_minutes, 60)} minutes"
+    |> Stream.map(
+      &%{
+        &1
+        | "start_date_local" =>
+            &1["start_date_local"]
+            |> DateTime.from_iso8601()
+            |> elem(1)
+            |> DateTime.to_date()
+      }
+    )
+    |> Enum.group_by(& &1["start_date_local"], & &1["moving_time"])
+    |> Map.to_list()
+    |> Enum.map(fn {date, durations} ->
+      %{"day" => date, "minutes" => durations |> Enum.sum() |> div(60)}
+    end)
   end
 end
