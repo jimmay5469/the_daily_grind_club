@@ -14,12 +14,14 @@ defmodule TheDailyGrindClub.Strava do
     update_athlete_activities(athlete, activities)
   end
 
-  def update_athlete_activities(%Athlete{} = athlete, activities) do
+  def update_athlete_activities(%Athlete{} = athlete, activities) when is_list(activities) do
     Athletes.update_athlete(athlete, %{
       activities: Poison.encode!(activities),
       last_fetch: NaiveDateTime.utc_now()
     })
   end
+
+  def update_athlete_activities(%Athlete{} = athlete, _), do: nil
 
   def is_authorized?(%Athlete{} = athlete) do
     athlete = @config[:backend].refresh_access_token(athlete)
