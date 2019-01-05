@@ -1,6 +1,6 @@
 <%= for athlete <- @athletes do %>
   <div>
-    <strong><%= athlete.first_name %> <%= athlete.last_name %></strong>: <%= active_days(athlete) %>/<span data-day-of-year></span> days this year (<%= activity_count(athlete) %> activities, <%= active_time(athlete) %>)
+    <strong><%= athlete.first_name %> <%= athlete.last_name %></strong>: <%= active_days(athlete) %>/<span data-day-of-year></span> days this year (<%= active_time(athlete) %>)
   </div>
 <% end %>
 <%= if Plug.Conn.get_session(@conn, :athlete_id) && Enum.count(@athletes) == 0 do %>

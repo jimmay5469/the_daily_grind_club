@@ -15,14 +15,6 @@ defmodule TheDailyGrindClubWeb.AthleteView do
     |> Enum.count()
   end
 
-  def activity_count(%Athlete{activities: nil}), do: 0
-
-  def activity_count(%Athlete{activities: activities}) do
-    activities
-    |> Poison.decode!()
-    |> Enum.count()
-  end
-
   def active_time(%Athlete{activities: nil}), do: "0 hours 0 minutes"
 
   def active_time(%Athlete{activities: activities}) do
