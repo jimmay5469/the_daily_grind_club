@@ -3,12 +3,6 @@ defmodule TheDailyGrindClubWeb.AthleteView do
 
   alias TheDailyGrindClub.Athletes.Athlete
 
-  def utc_day_of_year do
-    today = Date.utc_today()
-    {:ok, jan_1} = Date.new(today.year, 1, 1)
-    Date.diff(today, jan_1) + 1
-  end
-
   def active_days(%Athlete{activities: nil}), do: 0
 
   def active_days(%Athlete{activities: activities}) do

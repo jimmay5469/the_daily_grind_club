@@ -15,3 +15,7 @@ import "phoenix_html"
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+
+import moment from 'moment'
+const dayOfYear = moment().dayOfYear()
+document.querySelectorAll('[data-day-of-year]').forEach((el) => el.innerHTML = dayOfYear)
