@@ -11,7 +11,7 @@ export default ({ children, loginUrl, logoutUrl, athleteId, athletes }) => (
       </section>
     </header>
     <main role='main' className='container'>
-      {!athleteId && <a href={loginUrl}>Connect to Strava</a>}
+      {!athleteId && <a href={loginUrl}>Login with Strava</a>}
       {athleteId && !athletes.length && <span>You need to join <a href="https://www.strava.com/clubs/thedailygrindclub">The Daily Grind Club</a> on Strava to use this site.</span>}
       {children}
     </main>
