@@ -5,7 +5,7 @@ defmodule TheDailyGrindClub.Strava.StravaBackend do
   def fetch_athlete_activities(%Athlete{access_token: nil}), do: nil
 
   def fetch_athlete_activities(%Athlete{access_token: access_token} = athlete, starting_page \\ 1) do
-    {:ok, jan_1, _} = DateTime.from_iso8601("#{Date.utc_today().year}-01-01T00:00:00Z")
+    {:ok, jan_1, _} = DateTime.from_iso8601("#{Date.utc_today().year - 1}-12-23T00:00:00Z")
 
     {:ok, response} =
       HTTPoison.get(
