@@ -7,18 +7,22 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   def index(conn, _params) do
     case get_session(conn, :athlete_id) do
       nil ->
-        render(conn, "index.html", athletes: [])
+        render(conn, "index.html", athletes: [], is_admin: false)
 
       athlete_id ->
         athlete = athlete_id |> Athletes.get_athlete!()
 
         case athlete |> Strava.is_authorized?() do
           false ->
-            render(conn, "index.html", athletes: [])
+            render(conn, "index.html", athletes: [], is_admin: false)
 
           true ->
             TheDailyGrindClub.Strava.fetch_athlete_activities(athlete)
-            render(conn, "index.html", athletes: Athletes.list_athletes())
+
+            render(conn, "index.html",
+              athletes: Athletes.list_athletes(),
+              is_admin: athlete.strava_id == 17_683_278
+            )
         end
     end
   end

@@ -6,3 +6,12 @@
   data-athletes="<%= athletes_json(@athletes) %>"
 >
 </div>
+
+<%= if @is_admin do %>
+  <hr />
+  <%= for athlete <- @athletes do %>
+    <div>
+      <%= athlete.first_name %> <%= athlete.last_name %>: <%= athlete.last_fetch %>
+    </div>
+  <% end %>
+<% end %>
