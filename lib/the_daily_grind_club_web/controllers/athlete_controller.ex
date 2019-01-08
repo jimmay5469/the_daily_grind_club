@@ -10,12 +10,14 @@ defmodule TheDailyGrindClubWeb.AthleteController do
         render(conn, "index.html", athletes: [])
 
       athlete_id ->
-        case athlete_id |> Athletes.get_athlete!() |> Strava.is_authorized?() do
+        athlete = athlete_id |> Athletes.get_athlete!()
+
+        case athlete |> Strava.is_authorized?() do
           false ->
             render(conn, "index.html", athletes: [])
 
           true ->
-            TheDailyGrindClub.Strava.fetch_all_activities()
+            TheDailyGrindClub.Strava.fetch_athlete_activities(athlete)
             render(conn, "index.html", athletes: Athletes.list_athletes())
         end
     end

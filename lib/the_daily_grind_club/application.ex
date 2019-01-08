@@ -11,9 +11,10 @@ defmodule TheDailyGrindClub.Application do
       # Start the Ecto repository
       TheDailyGrindClub.Repo,
       # Start the endpoint when the application starts
-      TheDailyGrindClubWeb.Endpoint
+      TheDailyGrindClubWeb.Endpoint,
       # Starts a worker by calling: TheDailyGrindClub.Worker.start_link(arg)
       # {TheDailyGrindClub.Worker, arg},
+      TheDailyGrindClub.StravaSync
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
