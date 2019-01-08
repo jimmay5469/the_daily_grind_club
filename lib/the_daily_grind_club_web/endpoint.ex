@@ -39,7 +39,7 @@ defmodule TheDailyGrindClubWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    max_age: 60 * 60 * 24 * 365,
+    max_age: 30 * 60 * 24 * 7,
     key: "_the_daily_grind_club_key",
     signing_salt: "xe9+RfUd"
 
