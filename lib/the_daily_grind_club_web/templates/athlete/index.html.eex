@@ -9,9 +9,23 @@
 
 <%= if @is_admin do %>
   <hr />
-  <%= for athlete <- @athletes do %>
-    <div>
-      <%= athlete.first_name %> <%= athlete.last_name %>: <%= athlete.last_fetch %>
-    </div>
-  <% end %>
+  <h2>Stats</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Athlete</th>
+        <th>Last Fetch</th>
+        <th>Last Visit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for athlete <- @athletes |> Enum.sort_by(& &1.last_visit) |> Enum.reverse() do %>
+        <tr>
+          <td><%= athlete.first_name %> <%= athlete.last_name %></td>
+          <td><%= athlete.last_fetch %></td>
+          <td><%= athlete.last_visit %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>

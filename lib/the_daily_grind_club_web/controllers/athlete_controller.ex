@@ -10,7 +10,11 @@ defmodule TheDailyGrindClubWeb.AthleteController do
         render(conn, "index.html", athletes: [], is_admin: false)
 
       athlete_id ->
-        athlete = athlete_id |> Athletes.get_athlete!()
+        athlete =
+          athlete_id
+          |> Athletes.get_athlete!()
+          |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
+          |> elem(1)
 
         case athlete |> Strava.is_authorized?() do
           false ->

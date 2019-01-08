@@ -7,6 +7,7 @@ defmodule TheDailyGrindClub.Athletes.Athlete do
     field :first_name, :string
     field :last_name, :string
     field :activities, :binary
+    field :last_visit, :naive_datetime
     field :last_fetch, :naive_datetime
     field :access_token, :string
     field :access_token_expiration, :integer
@@ -23,6 +24,7 @@ defmodule TheDailyGrindClub.Athletes.Athlete do
       :first_name,
       :last_name,
       :activities,
+      :last_visit,
       :last_fetch,
       :access_token,
       :access_token_expiration,
