@@ -11,7 +11,8 @@ git reset --hard origin/master
 
 export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
 bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-asdf install
+asdf install # erlang
+asdf install # everything else
 
 mix local.hex --if-missing --force
 mix local.rebar --if-missing --force
