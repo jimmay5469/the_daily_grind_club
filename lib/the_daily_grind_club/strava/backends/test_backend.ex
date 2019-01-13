@@ -1881,7 +1881,7 @@ defmodule TheDailyGrindClub.Strava.TestBackend do
     Poison.decode!(@sample_response)
   end
 
-  def fetch_athlete(%Athlete{}) do
+  def fetch_athlete(access_token) do
     %{"clubs" => [%{"id" => 493_369}]}
   end
 

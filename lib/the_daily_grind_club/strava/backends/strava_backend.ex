@@ -26,9 +26,7 @@ defmodule TheDailyGrindClub.Strava.StravaBackend do
     end
   end
 
-  def fetch_athlete(%Athlete{access_token: nil}), do: nil
-
-  def fetch_athlete(%Athlete{access_token: access_token}) do
+  def fetch_athlete(access_token) do
     {:ok, response} =
       HTTPoison.get(
         "https://www.strava.com/api/v3/athlete",
