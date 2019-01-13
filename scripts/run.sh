@@ -10,7 +10,7 @@ git fetch
 git reset --hard origin/master
 
 export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
-bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+export NODEJS_CHECK_SIGNATURES="no"
 asdf install # erlang
 asdf install # everything else
 
