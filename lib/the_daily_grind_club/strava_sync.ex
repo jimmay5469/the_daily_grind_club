@@ -6,7 +6,6 @@ defmodule TheDailyGrindClub.StravaSync do
   end
 
   def init(state) do
-    do_work()
     schedule_work()
     {:ok, state}
   end
