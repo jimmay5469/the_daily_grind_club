@@ -1,5 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom';
+import humps from 'humps'
 import Layout from './components/Layout'
 import Athletes from './components/Athletes'
 
@@ -13,7 +14,7 @@ import 'phoenix_html'
 // import socket from './socket'
 
 const reactAppEl = document.querySelector('[data-react-app]')
-const athletes = JSON.parse(reactAppEl.dataset.athletes)
+const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
 
 render((
   <Layout

@@ -21,7 +21,8 @@ defmodule TheDailyGrindClubWeb.AthleteView do
         lastName: &1.last_name,
         lastFetch: NaiveDateTime.to_iso8601(&1.last_fetch) <> "Z",
         lastVisit: NaiveDateTime.to_iso8601(&1.last_visit) <> "Z",
-        activeDays: active_days(&1)
+        activeDays: active_days(&1),
+        activities: Poison.decode!(&1.activities)
       }
     )
     |> Poison.encode!()
