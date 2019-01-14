@@ -2,6 +2,13 @@ import React from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 
+moment.relativeTimeThreshold('M', 12)
+moment.relativeTimeThreshold('d', 30)
+moment.relativeTimeThreshold('h', 24)
+moment.relativeTimeThreshold('m', 60)
+moment.relativeTimeThreshold('s', 60)
+moment.relativeTimeThreshold('ss', 1)
+
 const today = moment()
 const dayOfWeek = moment(today).isoWeekday()
 const dayOfYear = moment(today).dayOfYear()
