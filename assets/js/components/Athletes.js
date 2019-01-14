@@ -12,10 +12,12 @@ moment.relativeTimeThreshold('ss', 1)
 const today = moment()
 const dayOfWeek = moment(today).isoWeekday()
 const dayOfYear = moment(today).dayOfYear()
+const startOfDay = moment(today).startOf('day')
 const startOfWeek = moment(today).startOf('isoWeek')
 const startOfYear = moment(today).startOf('year')
 
-const Duration = (minutes) => {
+const Duration = (seconds) => {
+  const minutes = Math.floor( seconds / 60 )
   const hours = Math.floor( minutes / 60 )
 
   return (
@@ -25,10 +27,10 @@ const Duration = (minutes) => {
   )
 }
 
-const Athlete = ({id, firstName, lastName, today, weekActiveDays, yearActiveDays, latestActivity}) => (
+const Athlete = ({id, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
   <tr key={id}>
     <td>{firstName} {lastName}</td>
-    <td><input type='checkbox' disabled={true} checked={today.minutes > 0} />{!!today.minutes && <>&nbsp;({ Duration(today.minutes) })</>}</td>
+    <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;({ Duration(todaySeconds) })</>}</td>
     <td>{weekActiveDays}/{dayOfWeek}</td>
     <td>{yearActiveDays}/{dayOfYear}</td>
     <td>{latestActivity && moment(latestActivity.startDate).add(latestActivity.elapsedTime, 'seconds').fromNow()}</td>
@@ -52,15 +54,20 @@ export default ({ athletes, isAdmin }) => (
           {
             _.chain(athletes)
               .map((athlete) => {
-                const week = _.filter(athlete.activeDays, ({ day }) => moment(day).isBetween(startOfWeek, today, 'day', '[]'))
-                const year = _.filter(athlete.activeDays, ({ day }) => moment(day).isBetween(startOfYear, today, 'day', '[]'))
+                const activities = _.map(athlete.activities, (activity) => ({ ...activity, day: moment(activity.startDateLocal.slice(0, 10)) }))
+                const todayActivities = _.filter(activities, ({ day }) => day.isBetween(startOfDay, today, 'day', '[]'))
+                const weekActivities = _.filter(activities, ({ day }) => day.isBetween(startOfWeek, today, 'day', '[]'))
+                const yearActivities = _.filter(activities, ({ day }) => day.isBetween(startOfYear, today, 'day', '[]'))
+                const week = _.groupBy(weekActivities, 'day')
+                const year = _.groupBy(yearActivities, 'day')
 
-                return Object.assign({}, athlete, {
-                  today: _.find(athlete.activeDays, ({ day }) => moment(day).isSame(today, 'day')) || { minutes: 0 },
-                  weekActiveDays: week.length,
-                  yearActiveDays: year.length,
-                  latestActivity: _.get(athlete.activities.reverse(), '[0]')
-                })
+                return {
+                  ...athlete,
+                  todaySeconds: _.sumBy(todayActivities, 'movingTime'),
+                  weekActiveDays: Object.keys(week).length,
+                  yearActiveDays: Object.keys(year).length,
+                  latestActivity: _.get(yearActivities.reverse(), '[0]')
+                }
               })
               .sortBy(['latestActivity.startDate'])
               .reverse()
