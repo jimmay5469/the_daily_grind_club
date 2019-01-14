@@ -1,31 +1,9 @@
 <div
   data-react-app
   data-athlete-id="<%= Plug.Conn.get_session(@conn, :athlete_id) %>"
+  data-is-admin="<%= @is_admin %>"
   data-login-url="<%= strava_login_url %>"
   data-logout-url="<%= Routes.athlete_path(TheDailyGrindClubWeb.Endpoint, :logout) %>"
   data-athletes="<%= athletes_json(@athletes) %>"
 >
 </div>
-
-<%= if @is_admin do %>
-  <hr />
-  <h2>Stats</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Athlete</th>
-        <th>Last Fetch</th>
-        <th>Last Visit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= for athlete <- @athletes |> Enum.sort_by(& &1.last_visit) |> Enum.reverse() do %>
-        <tr>
-          <td><%= athlete.first_name %> <%= athlete.last_name %></td>
-          <td><%= athlete.last_fetch %></td>
-          <td><%= athlete.last_visit %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>

@@ -15,9 +15,12 @@ defmodule TheDailyGrindClubWeb.AthleteView do
     athletes
     |> Enum.map(
       &%{
+        id: &1.id,
         stravaId: &1.strava_id,
         firstName: &1.first_name,
         lastName: &1.last_name,
+        lastFetch: NaiveDateTime.to_iso8601(&1.last_fetch) <> "Z",
+        lastVisit: NaiveDateTime.to_iso8601(&1.last_visit) <> "Z",
         activeDays: active_days(&1)
       }
     )

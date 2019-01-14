@@ -22,6 +22,9 @@ render((
     loginUrl={reactAppEl.dataset.loginUrl}
     logoutUrl={reactAppEl.dataset.logoutUrl}
   >
-    <Athletes athletes={athletes} />
+    <Athletes
+      athletes={athletes}
+      isAdmin={JSON.parse(reactAppEl.dataset.isAdmin)}
+    />
   </Layout>
 ), reactAppEl);
