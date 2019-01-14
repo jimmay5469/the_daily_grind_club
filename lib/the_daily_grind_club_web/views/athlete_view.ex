@@ -19,8 +19,10 @@ defmodule TheDailyGrindClubWeb.AthleteView do
         stravaId: &1.strava_id,
         firstName: &1.first_name,
         lastName: &1.last_name,
-        lastFetch: NaiveDateTime.to_iso8601(&1.last_fetch) <> "Z",
-        lastVisit: NaiveDateTime.to_iso8601(&1.last_visit) <> "Z",
+        lastFetch:
+          if(&1.last_fetch, do: NaiveDateTime.to_iso8601(&1.last_fetch) <> "Z", else: nil),
+        lastVisit:
+          if(&1.last_visit, do: NaiveDateTime.to_iso8601(&1.last_visit) <> "Z", else: nil),
         activeDays: active_days(&1),
         activities: Poison.decode!(&1.activities)
       }

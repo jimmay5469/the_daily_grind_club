@@ -80,8 +80,8 @@ export default ({ athletes, isAdmin }) => (
               .map((athlete) => (
                 <tr key={athlete.id}>
                   <td>{athlete.firstName} {athlete.lastName}</td>
-                  <td>{moment(athlete.lastFetch).fromNow()}</td>
-                  <td>{moment(athlete.lastVisit).fromNow()}</td>
+                  <td>{athlete.lastFetch && moment(athlete.lastFetch).fromNow()}</td>
+                  <td>{athlete.lastVisit && moment(athlete.lastVisit).fromNow()}</td>
                 </tr>
               ))
               .value()
