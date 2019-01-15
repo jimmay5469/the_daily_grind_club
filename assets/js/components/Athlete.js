@@ -27,11 +27,20 @@ const Duration = (seconds) => {
   )
 }
 
+const ActivityType = (type, activities) => {
+  return (
+    <li key={type}>
+      {type} ({Duration(_.sumBy(activities, 'elapsedTime'))})
+    </li>
+  )
+}
+
 export default ({ athlete: { firstName, lastName, activities } }) => {
   activities = _.map(activities, (activity) => ({ ...activity, day: moment(activity.startDateLocal.slice(0, 10)) }))
   const todayActivities = _.filter(activities, ({ day }) => day.isBetween(startOfDay, today, 'day', '[]'))
   const weekActivities = _.filter(activities, ({ day }) => day.isBetween(startOfWeek, today, 'day', '[]'))
   const yearActivities = _.filter(activities, ({ day }) => day.isBetween(startOfYear, today, 'day', '[]'))
+  const activityTypes = _.groupBy(yearActivities, 'type')
 
   return (
     <>
@@ -43,6 +52,9 @@ export default ({ athlete: { firstName, lastName, activities } }) => {
         Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} ({Duration(_.sumBy(weekActivities, 'elapsedTime'))})&nbsp;
         Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} ({Duration(_.sumBy(yearActivities, 'elapsedTime'))})&nbsp;
       </div>
+      <ul>
+        {_.map(Object.keys(activityTypes), (type) => ActivityType(type, activityTypes[type]))}
+      </ul>
     </>
   )
 }
