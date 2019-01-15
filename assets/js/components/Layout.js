@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 
 export default ({ children, loginUrl, logoutUrl, athleteId, athletes }) => (
   <>
@@ -6,7 +7,7 @@ export default ({ children, loginUrl, logoutUrl, athleteId, athletes }) => (
       <section className='container'>
         {athleteId && !!athletes.length && <a href={logoutUrl}>Logout</a>}
         <h1 className='phx-logo'>
-          The Daily Grind Club
+          <Link to="/">The Daily Grind Club</Link>
         </h1>
       </section>
     </header>

@@ -16,9 +16,9 @@ defmodule TheDailyGrindClubWeb.Router do
   scope "/", TheDailyGrindClubWeb do
     pipe_through :browser
 
-    get "/", AthleteController, :index
     get "/token_exchange", AthleteController, :token_exchange
     get "/logout", AthleteController, :logout
+    get "/*react_route", AthleteController, :index
   end
 
   # Other scopes may use custom stacks.

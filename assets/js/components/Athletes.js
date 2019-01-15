@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import moment from 'moment'
+import { Link } from "react-router-dom";
 
 moment.relativeTimeThreshold('M', 12)
 moment.relativeTimeThreshold('d', 30)
@@ -29,7 +30,7 @@ const Duration = (seconds) => {
 
 const Athlete = ({id, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
   <tr key={id}>
-    <td>{firstName} {lastName}</td>
+    <td><Link to={`/athlete/${id}`}>{firstName} {lastName}</Link></td>
     <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;({ Duration(todaySeconds) })</>}</td>
     <td>{weekActiveDays}/{dayOfWeek}</td>
     <td>{yearActiveDays}/{dayOfYear}</td>
