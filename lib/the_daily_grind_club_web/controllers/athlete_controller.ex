@@ -5,15 +5,15 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   alias TheDailyGrindClub.Strava
 
   def index(conn, _params) do
-    case get_session(conn, :athlete_id) do
+    case get_session(conn, :strava_id) do
       nil ->
         render(conn, "index.html", athletes: [], is_admin: false)
 
-      athlete_id ->
+      strava_id ->
         try do
           athlete =
-            athlete_id
-            |> Athletes.get_athlete!()
+            strava_id
+            |> Athletes.get_athlete_by_strava_id()
             |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
             |> elem(1)
 
@@ -46,9 +46,9 @@ defmodule TheDailyGrindClubWeb.AthleteController do
     athlete =
       case Athletes.get_athlete_by_strava_id(response_body["athlete"]["id"]) do
         nil ->
-          case Strava.is_authorized?(response_body["access_token"]) do
+          case Strava.is_authorized(response_body["access_token"]) do
             false ->
-              %{id: -1}
+              %{id: response_body["athlete"]["id"]}
 
             true ->
               {:ok, athlete} =
@@ -80,7 +80,7 @@ defmodule TheDailyGrindClubWeb.AthleteController do
       end
 
     conn
-    |> put_session(:athlete_id, athlete.id)
+    |> put_session(:strava_id, athlete.strava_id)
     |> redirect(to: "/")
   end
 

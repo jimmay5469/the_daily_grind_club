@@ -30,7 +30,7 @@ const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
 render((
   <Router>
     <Layout
-      athleteId={reactAppEl.dataset.athleteId}
+      stravaId={reactAppEl.dataset.stravaId}
       athletes={athletes}
       loginUrl={reactAppEl.dataset.loginUrl}
       logoutUrl={reactAppEl.dataset.logoutUrl}
@@ -43,7 +43,7 @@ render((
       )} />
       <Route exact path='/athlete/:id' render={({match: {params: {id}}})=>(
         <AthleteRoute
-          athlete={_.find(athletes, { 'id': Number(id) })}
+          athlete={_.find(athletes, { 'stravaId': Number(id) })}
         />
       )} />
     </Layout>

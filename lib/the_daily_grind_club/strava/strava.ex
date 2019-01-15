@@ -23,7 +23,7 @@ defmodule TheDailyGrindClub.Strava do
 
   def update_athlete_activities(%Athlete{} = athlete, _), do: nil
 
-  def is_authorized?(access_token) do
+  def is_authorized(access_token) do
     if @config[:backend].fetch_athlete(access_token)["clubs"] do
       @config[:backend].fetch_athlete(access_token)["clubs"]
       |> Stream.map(& &1["id"])
