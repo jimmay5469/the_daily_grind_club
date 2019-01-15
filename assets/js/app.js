@@ -1,11 +1,19 @@
 import React from 'react'
 import { render } from 'react-dom';
-import humps from 'humps'
 import _ from 'lodash'
+import humps from 'humps'
+import moment from 'moment'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Layout from './components/Layout'
-import Athletes from './components/Athletes'
-import Athlete from './components/Athlete'
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import AthleteListRoute from './components/AthleteListRoute'
+import AthleteRoute from './components/AthleteRoute'
+
+moment.relativeTimeThreshold('M', 12)
+moment.relativeTimeThreshold('d', 30)
+moment.relativeTimeThreshold('h', 24)
+moment.relativeTimeThreshold('m', 60)
+moment.relativeTimeThreshold('s', 60)
+moment.relativeTimeThreshold('ss', 1)
 
 // Import dependencies
 //
@@ -28,13 +36,13 @@ render((
       logoutUrl={reactAppEl.dataset.logoutUrl}
     >
       <Route exact path='/' render={()=>(
-        <Athletes
+        <AthleteListRoute
           athletes={athletes}
           isAdmin={JSON.parse(reactAppEl.dataset.isAdmin)}
         />
       )} />
       <Route exact path='/athlete/:id' render={({match: {params: {id}}})=>(
-        <Athlete
+        <AthleteRoute
           athlete={_.find(athletes, { 'id': Number(id) })}
         />
       )} />
