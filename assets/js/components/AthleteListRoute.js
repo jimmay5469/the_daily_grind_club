@@ -17,10 +17,10 @@ const dayOfYear = moment(today).dayOfYear()
 const Athlete = ({stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
   <tr key={stravaId}>
     <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
-    <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;({ Duration(todaySeconds) })</>}</td>
+    <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;(<Duration seconds={todaySeconds} />)</>}</td>
     <td>{weekActiveDays}/{dayOfWeek}</td>
     <td>{yearActiveDays}/{dayOfYear}</td>
-    <td>{latestActivity && Timestamp(latestActivity.startDate)}</td>
+    <td>{latestActivity && <Timestamp value={latestActivity.startDate} />}</td>
   </tr>
 )
 
@@ -78,8 +78,8 @@ export default ({ athletes, isAdmin }) => (
               .map((athlete) => (
                 <tr key={athlete.id}>
                   <td>{athlete.firstName} {athlete.lastName}</td>
-                  <td>{athlete.lastFetch && Timestamp(athlete.lastFetch)}</td>
-                  <td>{athlete.lastVisit && Timestamp(athlete.lastVisit)}</td>
+                  <td>{athlete.lastFetch && <Timestamp value={athlete.lastFetch} />}</td>
+                    <td>{athlete.lastVisit && <Timestamp value={athlete.lastVisit} />}</td>
                 </tr>
               ))
               .value()

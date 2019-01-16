@@ -41,15 +41,15 @@ export default ({ athlete, athlete: { firstName, lastName, activities } = {} }) 
         {firstName} {lastName}
       </h2>
       <div>
-        Today: <input type='checkbox' disabled={true} checked={todayActivities.length > 0} /> ({Duration(_.sumBy(todayActivities, 'elapsedTime'))})&nbsp;
-        Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} ({Duration(_.sumBy(weekActivities, 'elapsedTime'))})&nbsp;
-        Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} ({Duration(_.sumBy(yearActivities, 'elapsedTime'))})
+        Today: <input type='checkbox' disabled={true} checked={todayActivities.length > 0} /> (<Duration seconds={_.sumBy(todayActivities, 'elapsedTime')} />)&nbsp;
+        Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} (<Duration seconds={_.sumBy(weekActivities, 'elapsedTime')} />)&nbsp;
+        Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} (<Duration seconds={_.sumBy(yearActivities, 'elapsedTime')} />)
       </div>
       <br />
       <h3>Activity Types</h3>
       {_.map(activityTypes, ({ type, seconds }) => (
         <div key={type}>
-          {type} ({Duration(seconds)})
+        {type} (<Duration seconds={seconds} />)
         </div>
       ))}
       <br />
@@ -58,8 +58,8 @@ export default ({ athlete, athlete: { firstName, lastName, activities } = {} }) 
         <div key={activity.id}>
           {activity.type} -&nbsp;
           <strong>{activity.name}</strong> -&nbsp;
-          {Timestamp(activity.startDate)}&nbsp;
-          ({Duration(activity.elapsedTime)})
+          <Timestamp value={activity.startDate} />&nbsp;
+          (<Duration seconds={activity.elapsedTime} />)
         </div>
       ))}
     </>
