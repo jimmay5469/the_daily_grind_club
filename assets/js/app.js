@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import _ from 'lodash'
 import humps from 'humps'
 import moment from 'moment'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Layout from './components/Layout'
 import AthleteListRoute from './components/AthleteListRoute'
 import AthleteRoute from './components/AthleteRoute'
@@ -35,17 +35,24 @@ render((
       loginUrl={reactAppEl.dataset.loginUrl}
       logoutUrl={reactAppEl.dataset.logoutUrl}
     >
-      <Route exact path='/' render={()=>(
-        <AthleteListRoute
-          athletes={athletes}
-          isAdmin={JSON.parse(reactAppEl.dataset.isAdmin)}
-        />
-      )} />
-      <Route exact path='/athlete/:id' render={({match: {params: {id}}})=>(
-        <AthleteRoute
-          athlete={_.find(athletes, { 'stravaId': Number(id) })}
-        />
-      )} />
+      <Switch>
+        <Route exact path='/' render={()=>(
+          <AthleteListRoute
+            athletes={athletes}
+            isAdmin={JSON.parse(reactAppEl.dataset.isAdmin)}
+          />
+        )} />
+        <Route exact path='/athletes/:id' render={({match: {params: {id}}})=>(
+          <AthleteRoute
+            athlete={_.find(athletes, { 'stravaId': Number(id) })}
+          />
+        )} />
+        <Route render={()=>(
+          <div>
+            Page not found!
+          </div>
+        )} />
+      </Switch>
     </Layout>
   </Router>
 ), reactAppEl);

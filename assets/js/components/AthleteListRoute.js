@@ -15,7 +15,7 @@ const dayOfYear = moment(today).dayOfYear()
 
 const Athlete = ({stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
   <tr key={stravaId}>
-    <td><Link to={`/athlete/${stravaId}`}>{firstName} {lastName}</Link></td>
+    <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
     <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;({ Duration(todaySeconds) })</>}</td>
     <td>{weekActiveDays}/{dayOfWeek}</td>
     <td>{yearActiveDays}/{dayOfYear}</td>

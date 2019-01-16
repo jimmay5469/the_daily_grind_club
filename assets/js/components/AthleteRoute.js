@@ -12,7 +12,15 @@ const today = moment()
 const dayOfWeek = moment(today).isoWeekday()
 const dayOfYear = moment(today).dayOfYear()
 
-export default ({ athlete: { firstName, lastName, activities } }) => {
+export default ({ athlete, athlete: { firstName, lastName, activities } = {} }) => {
+  if (!athlete) {
+    return (
+      <div>
+        Athlete not found!
+      </div>
+    )
+  }
+
   const todayActivities = getTodayActivities(activities)
   const weekActivities = getWeekActivities(activities)
   const yearActivities = getYearActivities(activities)
