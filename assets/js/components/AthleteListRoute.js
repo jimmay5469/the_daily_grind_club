@@ -3,6 +3,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Link } from 'react-router-dom';
 import Duration from './Duration'
+import Timestamp from './Timestamp'
 import {
   getTodayActivities,
   getWeekActivities,
@@ -19,7 +20,7 @@ const Athlete = ({stravaId, firstName, lastName, todaySeconds, weekActiveDays, y
     <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;({ Duration(todaySeconds) })</>}</td>
     <td>{weekActiveDays}/{dayOfWeek}</td>
     <td>{yearActiveDays}/{dayOfYear}</td>
-    <td>{latestActivity && moment(latestActivity.startDate).fromNow()}</td>
+    <td>{latestActivity && Timestamp(latestActivity.startDate)}</td>
   </tr>
 )
 
@@ -77,8 +78,8 @@ export default ({ athletes, isAdmin }) => (
               .map((athlete) => (
                 <tr key={athlete.id}>
                   <td>{athlete.firstName} {athlete.lastName}</td>
-                  <td>{athlete.lastFetch && moment(athlete.lastFetch).fromNow()}</td>
-                  <td>{athlete.lastVisit && moment(athlete.lastVisit).fromNow()}</td>
+                  <td>{athlete.lastFetch && Timestamp(athlete.lastFetch)}</td>
+                  <td>{athlete.lastVisit && Timestamp(athlete.lastVisit)}</td>
                 </tr>
               ))
               .value()

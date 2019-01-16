@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import Duration from './Duration'
+import Timestamp from './Timestamp'
 import {
   getTodayActivities,
   getWeekActivities,
@@ -57,7 +58,7 @@ export default ({ athlete, athlete: { firstName, lastName, activities } = {} }) 
         <div key={activity.id}>
           {activity.type} -&nbsp;
           <strong>{activity.name}</strong> -&nbsp;
-          {moment(activity.startDate).fromNow()}&nbsp;
+          {Timestamp(activity.startDate)}&nbsp;
           ({Duration(activity.elapsedTime)})
         </div>
       ))}
