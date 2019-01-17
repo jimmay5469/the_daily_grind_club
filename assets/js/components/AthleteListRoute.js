@@ -16,23 +16,33 @@ const dayOfWeek = moment(today).isoWeekday()
 const dayOfYear = moment(today).dayOfYear()
 
 const mapStateToProps = ({ athletes, isAdmin }) => ({
-  athletes,
-  isAdmin
+  athleteList: _.chain(athletes)
+    .map((athlete) => {
+      const todayActivities = getTodayActivities(athlete.activities)
+      const weekActivities = getWeekActivities(athlete.activities)
+      const yearActivities = getYearActivities(athlete.activities)
+
+      return {
+        ...athlete,
+        todaySeconds: _.sumBy(todayActivities, 'movingTime'),
+        weekActiveDays: Object.keys(_.groupBy(weekActivities, 'day')).length,
+        yearActiveDays: Object.keys(_.groupBy(yearActivities, 'day')).length,
+        latestActivity: _.get(yearActivities.reverse(), '[0]')
+      }
+    })
+    .sortBy(['latestActivity.startDate'])
+    .reverse()
+    .value(),
+  isAdmin,
+  adminAthleteList: _.chain(athletes)
+    .sortBy(['lastVisit'])
+    .reverse()
+    .value()
 })
 
-const Athlete = ({stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
-  <tr key={stravaId}>
-    <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
-    <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;(<Duration seconds={todaySeconds} />)</>}</td>
-    <td>{weekActiveDays}/{dayOfWeek}</td>
-    <td>{yearActiveDays}/{dayOfYear}</td>
-    <td>{latestActivity && <Timestamp value={latestActivity.startDate} />}</td>
-  </tr>
-)
-
-const AthleteListRoute = ({ athletes, isAdmin }) => (
+const AthleteListRoute = ({ athleteList, isAdmin, adminAthleteList }) => (
   <>
-    {!!athletes.length &&
+    {!!athleteList.length &&
       <table>
         <thead>
           <tr>
@@ -44,26 +54,15 @@ const AthleteListRoute = ({ athletes, isAdmin }) => (
           </tr>
         </thead>
         <tbody>
-          {
-            _.chain(athletes)
-              .map((athlete) => {
-                const todayActivities = getTodayActivities(athlete.activities)
-                const weekActivities = getWeekActivities(athlete.activities)
-                const yearActivities = getYearActivities(athlete.activities)
-
-                return {
-                  ...athlete,
-                  todaySeconds: _.sumBy(todayActivities, 'movingTime'),
-                  weekActiveDays: Object.keys(_.groupBy(weekActivities, 'day')).length,
-                  yearActiveDays: Object.keys(_.groupBy(yearActivities, 'day')).length,
-                  latestActivity: _.get(yearActivities.reverse(), '[0]')
-                }
-              })
-              .sortBy(['latestActivity.startDate'])
-              .reverse()
-              .map(Athlete)
-              .value()
-          }
+          {athleteList.map(({stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
+            <tr key={stravaId}>
+              <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
+              <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;(<Duration seconds={todaySeconds} />)</>}</td>
+              <td>{weekActiveDays}/{dayOfWeek}</td>
+              <td>{yearActiveDays}/{dayOfYear}</td>
+              <td>{latestActivity && <Timestamp value={latestActivity.startDate} />}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     }
@@ -77,19 +76,13 @@ const AthleteListRoute = ({ athletes, isAdmin }) => (
           </tr>
         </thead>
         <tbody>
-          {
-            _.chain(athletes)
-              .sortBy(['lastVisit'])
-              .reverse()
-              .map((athlete) => (
-                <tr key={athlete.id}>
-                  <td>{athlete.firstName} {athlete.lastName}</td>
-                  <td>{athlete.lastFetch && <Timestamp value={athlete.lastFetch} />}</td>
-                    <td>{athlete.lastVisit && <Timestamp value={athlete.lastVisit} />}</td>
-                </tr>
-              ))
-              .value()
-          }
+          {adminAthleteList.map((athlete) => (
+            <tr key={athlete.id}>
+              <td>{athlete.firstName} {athlete.lastName}</td>
+              <td>{athlete.lastFetch && <Timestamp value={athlete.lastFetch} />}</td>
+                <td>{athlete.lastVisit && <Timestamp value={athlete.lastVisit} />}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     }
