@@ -1,7 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import _ from 'lodash'
 import moment from 'moment'
-import { Link } from 'react-router-dom';
 import Duration from './Duration'
 import Timestamp from './Timestamp'
 import {
@@ -14,6 +15,11 @@ const today = moment()
 const dayOfWeek = moment(today).isoWeekday()
 const dayOfYear = moment(today).dayOfYear()
 
+const mapStateToProps = ({ athletes, isAdmin }) => ({
+  athletes,
+  isAdmin
+})
+
 const Athlete = ({stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
   <tr key={stravaId}>
     <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
@@ -24,7 +30,7 @@ const Athlete = ({stravaId, firstName, lastName, todaySeconds, weekActiveDays, y
   </tr>
 )
 
-export default ({ athletes, isAdmin }) => (
+const AthleteListRoute = ({ athletes, isAdmin }) => (
   <>
     {!!athletes.length &&
       <table>
@@ -89,3 +95,5 @@ export default ({ athletes, isAdmin }) => (
     }
   </>
 )
+
+export default connect(mapStateToProps)(AthleteListRoute)

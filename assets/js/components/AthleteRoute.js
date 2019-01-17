@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import _ from 'lodash'
 import moment from 'moment'
 import Duration from './Duration'
@@ -13,7 +14,11 @@ const today = moment()
 const dayOfWeek = moment(today).isoWeekday()
 const dayOfYear = moment(today).dayOfYear()
 
-export default ({ athlete, athlete: { firstName, lastName, activities } = {} }) => {
+const mapStateToProps = ({ athletes }, { match: { params: { id } } }) => ({
+  athlete: _.find(athletes, { 'stravaId': Number(id) })
+})
+
+const AthleteRoute = ({ athlete, athlete: { firstName, lastName, activities } = {} }) => {
   if (!athlete) {
     return (
       <div>
@@ -65,3 +70,5 @@ export default ({ athlete, athlete: { firstName, lastName, activities } = {} }) 
     </>
   )
 }
+
+export default connect(mapStateToProps)(AthleteRoute)

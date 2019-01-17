@@ -1,7 +1,18 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-export default ({ children, loginUrl, logoutUrl, stravaId, athletes }) => (
+const mapStateToProps = ({ loginUrl, logoutUrl, stravaId, athletes }) => {
+  return {
+    loginUrl,
+    logoutUrl,
+    stravaId,
+    athletes
+  }
+}
+
+const Layout = ({ children, loginUrl, logoutUrl, stravaId, athletes }) => (
   <>
     <header>
       <section className='container'>
@@ -19,3 +30,5 @@ export default ({ children, loginUrl, logoutUrl, stravaId, athletes }) => (
     </main>
   </>
 )
+
+export default withRouter(connect(mapStateToProps)(Layout))

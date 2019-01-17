@@ -1,12 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import _ from 'lodash'
 import humps from 'humps'
 import moment from 'moment'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Layout from './components/Layout'
-import AthleteListRoute from './components/AthleteListRoute'
-import AthleteRoute from './components/AthleteRoute'
+import TheDailyGrindClubRouter from './router';
 
 moment.relativeTimeThreshold('M', 12)
 moment.relativeTimeThreshold('d', 30)
@@ -25,34 +24,23 @@ import 'phoenix_html'
 // import socket from './socket'
 
 const reactAppEl = document.querySelector('[data-react-app]')
+
 const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
+const initialState = {
+  stravaId: reactAppEl.dataset.stravaId,
+  isAdmin: JSON.parse(reactAppEl.dataset.isAdmin),
+  athletes: athletes,
+  loginUrl: reactAppEl.dataset.loginUrl,
+  logoutUrl: reactAppEl.dataset.logoutUrl
+}
+
+const store = createStore(
+  (state = initialState) => state,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
 render((
-  <Router>
-    <Layout
-      stravaId={reactAppEl.dataset.stravaId}
-      athletes={athletes}
-      loginUrl={reactAppEl.dataset.loginUrl}
-      logoutUrl={reactAppEl.dataset.logoutUrl}
-    >
-      <Switch>
-        <Route exact path='/' render={()=>(
-          <AthleteListRoute
-            athletes={athletes}
-            isAdmin={JSON.parse(reactAppEl.dataset.isAdmin)}
-          />
-        )} />
-        <Route exact path='/athletes/:id' render={({match: {params: {id}}})=>(
-          <AthleteRoute
-            athlete={_.find(athletes, { 'stravaId': Number(id) })}
-          />
-        )} />
-        <Route render={()=>(
-          <div>
-            Page not found!
-          </div>
-        )} />
-      </Switch>
-    </Layout>
-  </Router>
+  <Provider store={store}>
+    <TheDailyGrindClubRouter />
+  </Provider>
 ), reactAppEl);
