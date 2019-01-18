@@ -1,3 +1,5 @@
+import 'phoenix_html'
+
 import React from 'react'
 import { render } from 'react-dom';
 import { createStore } from 'redux';
@@ -13,15 +15,6 @@ moment.relativeTimeThreshold('h', 24)
 moment.relativeTimeThreshold('m', 60)
 moment.relativeTimeThreshold('s', 60)
 moment.relativeTimeThreshold('ss', 1)
-
-// Import dependencies
-//
-import 'phoenix_html'
-
-// Import local files
-//
-// Local files can be imported directly using relative paths, for example:
-// import socket from './socket'
 
 const reactAppEl = document.querySelector('[data-react-app]')
 
