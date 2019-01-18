@@ -11,10 +11,6 @@ import {
   getYearActivities
 } from '../utils/activityList'
 
-const today = moment()
-const dayOfWeek = moment(today).isoWeekday()
-const dayOfYear = moment(today).dayOfYear()
-
 const mapStateToProps = ({ athletes, isAdmin }) => ({
   athleteList: _.chain(athletes)
     .map((athlete) => {
@@ -37,10 +33,18 @@ const mapStateToProps = ({ athletes, isAdmin }) => ({
   adminAthleteList: _.chain(athletes)
     .sortBy(['lastVisit'])
     .reverse()
-    .value()
+    .value(),
+  dayOfWeek: moment().isoWeekday(),
+  dayOfYear: moment().dayOfYear()
 })
 
-const AthleteListRoute = ({ athleteList, isAdmin, adminAthleteList }) => (
+const AthleteListRoute = ({
+  athleteList,
+  isAdmin,
+  adminAthleteList,
+  dayOfWeek,
+  dayOfYear
+}) => (
   <>
     {!!athleteList.length &&
       <table>
