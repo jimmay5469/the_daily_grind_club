@@ -6,9 +6,6 @@ cd ~/apps/the_daily_grind_club
 
 export MIX_ENV=prod
 
-git fetch
-git reset --hard origin/master
-
 export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
 export NODEJS_CHECK_SIGNATURES="no"
 asdf install # erlang
