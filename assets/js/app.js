@@ -9,6 +9,8 @@ import humps from 'humps'
 import moment from 'moment'
 import TheDailyGrindClubRouter from './router';
 
+import socket from './socket'
+
 moment.relativeTimeThreshold('M', 12)
 moment.relativeTimeThreshold('d', 30)
 moment.relativeTimeThreshold('h', 24)
@@ -31,6 +33,13 @@ const store = createStore(
   (state = initialState) => state,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
+
+const athletesChannel = socket.channel(`athletes:update_athlete`, {})
+athletesChannel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+athletesChannel.onError(resp => { console.log("onError", resp) })
+athletesChannel.on('update_athlete', resp => { console.log("update_athlete", resp) })
 
 render((
   <Provider store={store}>
