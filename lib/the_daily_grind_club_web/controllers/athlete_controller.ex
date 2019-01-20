@@ -44,11 +44,25 @@ defmodule TheDailyGrindClubWeb.AthleteController do
     response_body = Poison.decode!(response.body)
 
     athlete =
-      case Athletes.get_athlete_by_strava_id(response_body["athlete"]["id"]) do
-        nil ->
+      try do
+        {:ok, athlete} =
+          response_body["athlete"]["id"]
+          |> Athletes.get_athlete_by_strava_id()
+          |> Athletes.update_athlete(%{
+            first_name: response_body["athlete"]["firstname"],
+            last_name: response_body["athlete"]["lastname"],
+            access_token: response_body["access_token"],
+            access_token_expiration: response_body["expires_at"],
+            refresh_token: response_body["refresh_token"]
+          })
+
+        Strava.fetch_athlete_activities(athlete)
+        athlete
+      rescue
+        Ecto.NoResultsError ->
           case Strava.is_authorized(response_body["access_token"]) do
             false ->
-              %{id: response_body["athlete"]["id"]}
+              %{strava_id: response_body["athlete"]["id"]}
 
             true ->
               {:ok, athlete} =
@@ -64,19 +78,6 @@ defmodule TheDailyGrindClubWeb.AthleteController do
               Strava.fetch_athlete_activities(athlete)
               athlete
           end
-
-        athlete ->
-          {:ok, athlete} =
-            Athletes.update_athlete(athlete, %{
-              first_name: response_body["athlete"]["firstname"],
-              last_name: response_body["athlete"]["lastname"],
-              access_token: response_body["access_token"],
-              access_token_expiration: response_body["expires_at"],
-              refresh_token: response_body["refresh_token"]
-            })
-
-          Strava.fetch_athlete_activities(athlete)
-          athlete
       end
 
     conn

@@ -1,12 +1,27 @@
 defmodule TheDailyGrindClubWeb.AthleteChannel do
   use TheDailyGrindClubWeb, :channel
 
+  alias TheDailyGrindClub.Athletes
+
   intercept(["update_athlete"])
 
-  def join("athletes:update_athlete", _params, socket) do
-    {:ok,
-     TheDailyGrindClub.Athletes.list_athletes()
-     |> TheDailyGrindClubWeb.AthleteView.athletes_map(), socket}
+  def join("athletes:update_athlete", _params, %{assigns: %{strava_id: strava_id}} = socket) do
+    try do
+      athlete =
+        strava_id
+        |> Athletes.get_athlete_by_strava_id()
+        |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
+        |> elem(1)
+
+      {:ok,
+       Athletes.list_athletes()
+       |> TheDailyGrindClubWeb.AthleteView.athletes_map(), socket}
+    rescue
+      Ecto.NoResultsError ->
+        {:ok,
+         []
+         |> TheDailyGrindClubWeb.AthleteView.athletes_map(), socket}
+    end
   end
 
   def handle_out("update_athlete", athlete, socket) do

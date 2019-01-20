@@ -7,6 +7,16 @@ defmodule TheDailyGrindClubWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :put_user_token
+  end
+
+  defp put_user_token(conn, _) do
+    if strava_id = get_session(conn, :strava_id) do
+      token = Phoenix.Token.sign(conn, "user socket", strava_id)
+      assign(conn, :user_token, token)
+    else
+      conn
+    end
   end
 
   pipeline :api do
