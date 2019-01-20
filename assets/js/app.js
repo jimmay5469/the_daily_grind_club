@@ -22,24 +22,37 @@ const reactAppEl = document.querySelector('[data-react-app]')
 
 const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
 const initialState = {
+  connected: true,
   stravaId: reactAppEl.dataset.stravaId,
   isAdmin: JSON.parse(reactAppEl.dataset.isAdmin),
   athletes: athletes,
   loginUrl: reactAppEl.dataset.loginUrl,
   logoutUrl: reactAppEl.dataset.logoutUrl
 }
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'CONNECTED':
+      return { ...state, connected: true, athletes: action.athletes }
+    case 'DISCONNECTED':
+      return { ...state, connected: false }
+    case 'UPDATE_ATHLETE':
+      return { ...state, athletes: state.athletes.map((athlete) => athlete.stravaId === action.athlete.stravaId ? action.athlete : athlete) }
+    default:
+      return state
+  }
+}
 
 const store = createStore(
-  (state = initialState) => state,
+  reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
 const athletesChannel = socket.channel(`athletes:update_athlete`, {})
 athletesChannel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-athletesChannel.onError(resp => { console.log("onError", resp) })
-athletesChannel.on('update_athlete', resp => { console.log("update_athlete", resp) })
+  .receive("ok", resp => { store.dispatch({ type: 'CONNECTED', athletes: humps.camelizeKeys(resp) }) })
+  .receive("error", resp => { store.dispatch({ type: 'DISCONNECTED' }) })
+athletesChannel.onError(resp => { store.dispatch({ type: 'DISCONNECTED' }) })
+athletesChannel.on('update_athlete', resp => { store.dispatch({ type: 'UPDATE_ATHLETE', athlete: humps.camelizeKeys(resp) }) })
 
 render((
   <Provider store={store}>
