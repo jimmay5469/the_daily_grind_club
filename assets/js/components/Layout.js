@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
-const mapStateToProps = ({ loginUrl, logoutUrl, stravaId, athletes }) => {
+const mapStateToProps = ({ connected, loginUrl, logoutUrl, stravaId, athletes }) => {
   return {
+    connected,
     loginUrl,
     logoutUrl,
     stravaId,
@@ -12,8 +13,8 @@ const mapStateToProps = ({ loginUrl, logoutUrl, stravaId, athletes }) => {
   }
 }
 
-const Layout = ({ children, loginUrl, logoutUrl, stravaId, athletes }) => (
-  <>
+const Layout = ({ children, connected, loginUrl, logoutUrl, stravaId, athletes }) => (
+  <div className={ connected ? "connected" : "" }>
     <header>
       <section className='container'>
         {stravaId && !!athletes.length && <a href={logoutUrl}>Logout</a>}
@@ -28,7 +29,7 @@ const Layout = ({ children, loginUrl, logoutUrl, stravaId, athletes }) => (
       {stravaId && !athletes.length && <div>Already joined? <a href={loginUrl}>Try logging in with Strva again.</a></div>}
       {children}
     </main>
-  </>
+  </div>
 )
 
 export default withRouter(connect(mapStateToProps)(Layout))

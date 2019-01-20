@@ -70,9 +70,18 @@ defmodule TheDailyGrindClub.Athletes do
 
   """
   def update_athlete(%Athlete{} = athlete, attrs) do
-    athlete
-    |> Athlete.changeset(attrs)
-    |> Repo.update()
+    {:ok, athlete} =
+      athlete
+      |> Athlete.changeset(attrs)
+      |> Repo.update()
+
+    TheDailyGrindClubWeb.Endpoint.broadcast(
+      "athletes:update_athlete",
+      "update_athlete",
+      TheDailyGrindClubWeb.AthleteView.athlete_map(athlete)
+    )
+
+    {:ok, athlete}
   end
 
   @doc """

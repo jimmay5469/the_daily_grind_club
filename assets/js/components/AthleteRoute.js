@@ -10,10 +10,6 @@ import {
   getYearActivities
 } from '../utils/activityList'
 
-const today = moment()
-const dayOfWeek = moment(today).isoWeekday()
-const dayOfYear = moment(today).dayOfYear()
-
 const mapStateToProps = ({ athletes }, { match: { params: { id } } }) => {
   const athlete = _.find(athletes, { 'stravaId': Number(id) })
   const activities = athlete ? athlete.activities : []
@@ -32,11 +28,21 @@ const mapStateToProps = ({ athletes }, { match: { params: { id } } }) => {
       }))
       .sortBy('seconds')
       .reverse()
-      .value()
+      .value(),
+    dayOfWeek: moment().isoWeekday(),
+    dayOfYear: moment().dayOfYear()
   }
 }
 
-const AthleteRoute = ({ athlete, todayActivities, weekActivities, yearActivities, activityTypes }) => {
+const AthleteRoute = ({
+  athlete,
+  todayActivities,
+  weekActivities,
+  yearActivities,
+  activityTypes,
+  dayOfWeek,
+  dayOfYear
+}) => {
   if (!athlete) {
     return (
       <div>
