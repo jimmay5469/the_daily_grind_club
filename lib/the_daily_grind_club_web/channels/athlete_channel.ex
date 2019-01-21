@@ -7,11 +7,9 @@ defmodule TheDailyGrindClubWeb.AthleteChannel do
 
   def join("athletes:update_athlete", _params, %{assigns: %{strava_id: strava_id}} = socket) do
     try do
-      athlete =
-        strava_id
-        |> Athletes.get_athlete_by_strava_id()
-        |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
-        |> elem(1)
+      strava_id
+      |> Athletes.get_athlete_by_strava_id()
+      |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
 
       {:ok,
        Athletes.list_athletes()
