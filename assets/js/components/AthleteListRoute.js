@@ -11,7 +11,7 @@ import {
   getYearActivities
 } from '../utils/activityList'
 
-const mapStateToProps = ({ athletes, isAdmin }) => ({
+const mapStateToProps = ({ athletes }) => ({
   athleteList: _.chain(athletes)
     .map((athlete) => {
       const todayActivities = getTodayActivities(athlete.activities)
@@ -29,19 +29,12 @@ const mapStateToProps = ({ athletes, isAdmin }) => ({
     .sortBy(['latestActivity.startDate'])
     .reverse()
     .value(),
-  isAdmin,
-  adminAthleteList: _.chain(athletes)
-    .sortBy(['lastVisit'])
-    .reverse()
-    .value(),
   dayOfWeek: moment().isoWeekday(),
   dayOfYear: moment().dayOfYear()
 })
 
 const AthleteListRoute = ({
   athleteList,
-  isAdmin,
-  adminAthleteList,
   dayOfWeek,
   dayOfYear
 }) => (
@@ -65,26 +58,6 @@ const AthleteListRoute = ({
               <td>{weekActiveDays}/{dayOfWeek}</td>
               <td>{yearActiveDays}/{dayOfYear}</td>
               <td>{latestActivity && <Timestamp value={latestActivity.startDate} />}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    }
-    {isAdmin &&
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Last Fetch</th>
-            <th>Last Visit</th>
-          </tr>
-        </thead>
-        <tbody>
-          {adminAthleteList.map((athlete) => (
-            <tr key={athlete.id}>
-              <td>{athlete.firstName} {athlete.lastName}</td>
-              <td>{athlete.lastFetch && <Timestamp value={athlete.lastFetch} />}</td>
-                <td>{athlete.lastVisit && <Timestamp value={athlete.lastVisit} />}</td>
             </tr>
           ))}
         </tbody>

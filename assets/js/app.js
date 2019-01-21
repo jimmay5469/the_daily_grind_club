@@ -24,7 +24,6 @@ const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
 const initialState = {
   connected: true,
   stravaId: reactAppEl.dataset.stravaId,
-  isAdmin: JSON.parse(reactAppEl.dataset.isAdmin),
   athletes: athletes,
   loginUrl: reactAppEl.dataset.loginUrl,
   logoutUrl: reactAppEl.dataset.logoutUrl
