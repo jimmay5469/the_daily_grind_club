@@ -1,9 +1,7 @@
 /* This file is for your main application css. */
 
-@import "./phoenix";
+$primary: #FC4C02;
+$link: $primary;
+$navbar-box-shadow-size: 0px 1px 0px 0px;
 
-.connected {
-  a {
-    color: #FC4C02;
-  }
-}
+@import "../node_modules/bulma";
