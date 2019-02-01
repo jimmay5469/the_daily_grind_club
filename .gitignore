@@ -44,6 +44,7 @@ npm-debug.log
 
 # Docker
 /data/
+/backups/
 Caddyfile
 /.caddy/
 

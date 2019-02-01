@@ -1,0 +1,16 @@
+- name: Migrate data
+  hosts: all
+  remote_user: deploy
+  tasks:
+    - name: Create `~/apps/the_daily_grind_club/backups`
+      raw: mkdir -p ~/apps/the_daily_grind_club/backups
+    - name: Copy `backups/migrate.tar`
+      copy:
+        src: ../backups/migrate.tar
+        dest: ~/apps/the_daily_grind_club/backups/migrate.tar
+    - name: Start database
+      raw: cd ~/apps/the_daily_grind_club && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d db
+    - name: Restore database
+      raw: cd ~/apps/the_daily_grind_club && docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec db pg_restore -Ft -C -U postgres -d postgres /backups/migrate.tar
+    - name: Stop database
+      raw: cd ~/apps/the_daily_grind_club && docker-compose -f docker-compose.yml -f docker-compose.prod.yml down

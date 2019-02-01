@@ -12,3 +12,4 @@ services:
     image: postgres:11.1-alpine
     volumes:
       - ./data:/var/lib/postgresql/data
+      - ./backups:/backups
