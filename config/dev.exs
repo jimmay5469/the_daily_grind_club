@@ -69,7 +69,7 @@ config :the_daily_grind_club, TheDailyGrindClub.Repo,
   username: "postgres",
   password: "postgres",
   database: "the_daily_grind_club_dev",
-  hostname: "localhost",
+  hostname: "db",
   pool_size: 10
 
 import_config "dev.secret.exs"

@@ -1,0 +1,32 @@
+- name: Security
+  hosts: all
+  tasks:
+    - name: Run security script
+      script: ./scripts/security.sh
+
+- name: Docker
+  hosts: all
+  vars:
+    docker_users:
+      - deploy
+  roles:
+    - geerlingguy.docker
+
+- name: Project
+  hosts: all
+  remote_user: deploy
+  tasks:
+    - name: Clone/Pull project
+      git:
+        repo: git@github.com:jimmay5469/the_daily_grind_club.git
+        dest: ~/apps/the_daily_grind_club
+        force: yes
+        accept_hostkey: yes
+    - name: Copy `config/prod.secret.exs`
+      copy:
+        src: ../config/prod.secret.exs
+        dest: ~/apps/the_daily_grind_club/config/prod.secret.exs
+    - name: Copy `Caddyfile`
+      copy:
+        src: ../Caddyfile
+        dest: ~/apps/the_daily_grind_club/Caddyfile

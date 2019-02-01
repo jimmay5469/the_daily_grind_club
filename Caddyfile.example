@@ -1,0 +1,11 @@
+example.com {
+  tls me@example.com
+  proxy / web:4001 {
+    websocket
+  }
+  gzip
+  redir 301 {
+    if {scheme} is http
+    / https://{host}{uri}
+  }
+}

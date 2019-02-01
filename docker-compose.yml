@@ -1,0 +1,14 @@
+version: '3'
+services:
+  web:
+    image: bitwalker/alpine-elixir-phoenix:1.8.0
+    command: ./scripts/run.sh
+    working_dir: /opt/app/the_daily_grind_club
+    volumes:
+      - ./:/opt/app/the_daily_grind_club
+    depends_on:
+      - db
+  db:
+    image: postgres:11.1-alpine
+    volumes:
+      - ./data:/var/lib/postgresql/data

@@ -42,5 +42,10 @@ npm-debug.log
 /config/*.secret.exs
 
 
-# Custom
+# Docker
+/data/
+Caddyfile
+/.caddy/
+
+# Parcel
 /assets/.cache/

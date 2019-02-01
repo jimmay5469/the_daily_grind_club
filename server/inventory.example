@@ -1,0 +1,8 @@
+[production]
+192.34.60.8
+
+[py3-hosts]
+192.34.60.8
+
+[py3-hosts:vars]
+ansible_python_interpreter=/usr/bin/python3

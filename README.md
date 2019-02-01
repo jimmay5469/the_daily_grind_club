@@ -1,15 +1,25 @@
 # TheDailyGrindClub
 
+## Prerequisites
+
+  * Docker
+  * docker-compose
+  * Ansible
+
+## Development
+
 To start your Phoenix server:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+  * Start Phoenix endpoint with `docker-compose up`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Deployment
+
+  * Create `./server/inventory`
+  * Create `./Caddyfile`
+  * Run `cd server && ansible-galaxy install -r requirements.yml && ansible-playbook main.yml; cd -`
+  * Run `ssh -A deploy@[ip] "cd ~/apps/the_daily_grind_club && docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.caddy.yml up -d"`
 
 ## Learn more
 

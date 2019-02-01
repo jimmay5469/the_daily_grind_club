@@ -14,5 +14,5 @@ config :the_daily_grind_club, TheDailyGrindClub.Repo,
   username: "postgres",
   password: "postgres",
   database: "the_daily_grind_club_test",
-  hostname: "localhost",
+  hostname: "db",
   pool: Ecto.Adapters.SQL.Sandbox
