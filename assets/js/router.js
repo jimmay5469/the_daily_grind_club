@@ -1,11 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import Layout from './components/Layout'
 import AthleteListRoute from './components/AthleteListRoute'
 import AthleteRoute from './components/AthleteRoute'
 
-export default () => (
-  <Router>
+export default ({ history }) => (
+  <Router history={history}>
     <Layout>
       <Switch>
         <Route exact path='/' component={AthleteListRoute} />

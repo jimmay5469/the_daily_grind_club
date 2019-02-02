@@ -4,6 +4,7 @@ import React from 'react'
 import { render } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { createBrowserHistory } from 'history';
 import _ from 'lodash'
 import humps from 'humps'
 import moment from 'moment'
@@ -22,6 +23,7 @@ const reactAppEl = document.querySelector('[data-react-app]')
 
 const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
 const initialState = {
+  hamburgerMenuOpen: false,
   connected: true,
   stravaId: reactAppEl.dataset.stravaId,
   athletes: athletes,
@@ -30,12 +32,16 @@ const initialState = {
 }
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'ROUTE_CHANGE':
+      return { ...state, hamburgerMenuOpen: false }
     case 'CONNECTED':
       return { ...state, connected: true, athletes: action.athletes }
     case 'DISCONNECTED':
       return { ...state, connected: false }
     case 'UPDATE_ATHLETE':
       return { ...state, athletes: state.athletes.map((athlete) => athlete.stravaId === action.athlete.stravaId ? action.athlete : athlete) }
+    case 'HAMBURGER_CLICK':
+      return { ...state, hamburgerMenuOpen: !state.hamburgerMenuOpen }
     default:
       return state
   }
@@ -46,6 +52,9 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
+const history = createBrowserHistory()
+history.listen(() => { store.dispatch({ type: 'ROUTE_CHANGE' }) })
+
 const athletesChannel = socket.channel(`athletes:update_athlete`, {})
 athletesChannel.join()
   .receive("ok", resp => { store.dispatch({ type: 'CONNECTED', athletes: humps.camelizeKeys(resp) }) })
@@ -55,6 +64,6 @@ athletesChannel.on('update_athlete', resp => { store.dispatch({ type: 'UPDATE_AT
 
 render((
   <Provider store={store}>
-    <TheDailyGrindClubRouter />
+    <TheDailyGrindClubRouter history={history} />
   </Provider>
 ), reactAppEl);
