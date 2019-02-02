@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
-const mapStateToProps = ({ hamburgerMenuOpen, connected, loginUrl, logoutUrl, stravaId, athletes }) => ({
+const mapStateToProps = ({ hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes }) => ({
   hamburgerMenuOpen,
-  connected,
   loginUrl,
   logoutUrl,
   stravaId,
@@ -18,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-const Layout = ({ children, hamburgerMenuOpen, connected, loginUrl, logoutUrl, stravaId, athletes, onHamburgerClick }) => (
+const Layout = ({ children, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes, onHamburgerClick }) => (
   <div>
     <nav className='navbar has-shadow'>
       <div className='navbar-brand'>
@@ -44,7 +43,7 @@ const Layout = ({ children, hamburgerMenuOpen, connected, loginUrl, logoutUrl, s
         </div>
       </div>
     </nav>
-    <main role='main' className='container'>
+    <main role='main' className='content'>
       {!stravaId && <a href={loginUrl}>Login with Strava</a>}
       {stravaId && !athletes.length && <div>You need to join <a href='https://www.strava.com/clubs/thedailygrindclub'>The Daily Grind Club</a> on Strava to use this site.</div>}
       {stravaId && !athletes.length && <div>Already joined? <a href={loginUrl}>Try logging in with Strva again.</a></div>}

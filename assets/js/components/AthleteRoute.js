@@ -59,14 +59,12 @@ const AthleteRoute = ({
         Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} (<Duration seconds={_.sumBy(weekActivities, 'movingTime')} />)&nbsp;
         Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} (<Duration seconds={_.sumBy(yearActivities, 'movingTime')} />)
       </div>
-      <br />
       <h3>Activity Types</h3>
       {_.map(activityTypes, ({ type, seconds }) => (
         <div key={type}>
           {type} (<Duration seconds={seconds} />)
         </div>
       ))}
-      <br />
       <h3>Latest Activities</h3>
       {yearActivities.slice(-5).reverse().map((activity) => (
         <div key={activity.id}>
