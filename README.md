@@ -14,6 +14,13 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+  * Optional: Pull data from production
+    * Run `pg_dump -Ft the_daily_grind_club_prod > migrate.tar` on old server
+    * Scp `migrate.tar` on old server to `./backups/migrate.tar`
+    * Run `docker-compose up -d db`
+    * Run `docker-compose exec db pg_restore -Ft -c -U postgres -d the_daily_grind_club_dev backups/migrate.tar`
+    * Run `docker-compose down`
+
 ## Deployment
 
   * Create `./server/inventory`
