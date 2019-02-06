@@ -22,48 +22,61 @@ const mapStateToProps = ({ athletes }) => ({
         ...athlete,
         todaySeconds: _.sumBy(todayActivities, 'movingTime'),
         weekActiveDays: Object.keys(_.groupBy(weekActivities, 'day')).length,
-        yearActiveDays: Object.keys(_.groupBy(yearActivities, 'day')).length,
         latestActivity: _.get(yearActivities.reverse(), '[0]')
       }
     })
     .sortBy(['latestActivity.startDate'])
     .reverse()
     .value(),
-  dayOfWeek: moment().isoWeekday(),
-  dayOfYear: moment().dayOfYear()
+  dayOfWeek: moment().isoWeekday()
 })
 
 const AthleteListRoute = ({
   athleteList,
-  dayOfWeek,
-  dayOfYear
+  dayOfWeek
 }) => (
-  <>
-    {!!athleteList.length &&
-      <table className='table'>
-        <thead>
-          <tr>
-            <th />
-            <th>Today</th>
-            <th>Week</th>
-            <th>Year</th>
-            <th>Latest Activity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {athleteList.map(({ stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity }) => (
-            <tr key={stravaId}>
-              <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
-              <td><input type='checkbox' disabled checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;(<Duration seconds={todaySeconds} />)</>}</td>
-              <td>{weekActiveDays}/{dayOfWeek}</td>
-              <td>{yearActiveDays}/{dayOfYear}</td>
-              <td>{latestActivity && <Timestamp value={latestActivity.startDate} />}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    }
-  </>
+  <div className='columns is-centered'>
+    <div className='column is-three-fifths'>
+      {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
+      {!!athleteList.length &&
+      athleteList.map(({ stravaId, firstName, lastName, todaySeconds, weekActiveDays, latestActivity }) => (
+        <div key={stravaId} className='box'>
+          <div className='columns is-mobile'>
+            <div className='column'>
+              <Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link>
+            </div>
+            <div className='column has-text-right'>
+              {latestActivity && <Timestamp value={latestActivity.startDate} />}
+            </div>
+          </div>
+          <div className='columns'>
+            <div className='column'>
+              <div className='field is-grouped is-grouped-multiline'>
+                <div className='control'>
+                  <div className='tags has-addons'>
+                    <span className='tag'>Today</span>
+                    {todaySeconds > 0
+                      ? <span className='tag is-success'><Duration seconds={todaySeconds} /></span>
+                      : <span className='tag is-danger'>No</span>
+                    }
+                  </div>
+                </div>
+                <div className='control'>
+                  <div className='tags has-addons'>
+                    <span className='tag'>Week</span>
+                    {weekActiveDays === dayOfWeek && <span className='tag is-success'>{weekActiveDays}/{dayOfWeek}</span>}
+                    {weekActiveDays === 0 && <span className='tag is-danger'>{weekActiveDays}/{dayOfWeek}</span>}
+                    {weekActiveDays !== dayOfWeek && weekActiveDays !== 0 && <span className='tag is-warning'>{weekActiveDays}/{dayOfWeek}</span>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+      }
+    </div>
+  </div>
 )
 
 export default connect(mapStateToProps)(AthleteListRoute)

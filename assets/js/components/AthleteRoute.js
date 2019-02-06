@@ -53,8 +53,8 @@ const AthleteRoute = ({
 
   return (
     <>
-      <div class='columns'>
-        <div class='column'>
+      <div className='columns'>
+        <div className='column'>
           <h2 className='title is-3'>{athlete.firstName} {athlete.lastName}</h2>
           <div>
         Today: <input type='checkbox' disabled checked={todayActivities.length > 0} /> (<Duration seconds={_.sumBy(todayActivities, 'movingTime')} />)&nbsp;
@@ -63,8 +63,8 @@ const AthleteRoute = ({
           </div>
         </div>
       </div>
-      <div class='columns'>
-        <div class='column'>
+      <div className='columns'>
+        <div className='column'>
           <h3 className='title is-4'>Activity Types</h3>
           {_.map(activityTypes, ({ type, seconds }) => (
             <div key={type}>
@@ -73,8 +73,8 @@ const AthleteRoute = ({
           ))}
         </div>
       </div>
-      <div class='columns'>
-        <div class='column'>
+      <div className='columns'>
+        <div className='column'>
           <h3 className='title is-4'>Latest Activities</h3>
           {yearActivities.slice(-5).reverse().map((activity) => (
             <div key={activity.id}>
