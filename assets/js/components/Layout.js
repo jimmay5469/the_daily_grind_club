@@ -1,7 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { Link, withRouter } from 'react-router-dom'
 
 const mapStateToProps = ({ hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes }) => ({
   hamburgerMenuOpen,
@@ -12,7 +11,7 @@ const mapStateToProps = ({ hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, ath
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onHamburgerClick() {
+  onHamburgerClick () {
     dispatch({ type: 'HAMBURGER_CLICK' })
   }
 })
@@ -28,9 +27,9 @@ const Layout = ({ children, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, at
             </h1>
           </div>
           <a className={`navbar-burger ${hamburgerMenuOpen ? 'is-active' : ''}`} onClick={onHamburgerClick}>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span />
+            <span />
+            <span />
           </a>
         </div>
         <div className={`navbar-menu ${hamburgerMenuOpen ? 'is-active' : ''}`}>

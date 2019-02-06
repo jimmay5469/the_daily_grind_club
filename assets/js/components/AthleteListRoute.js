@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import moment from 'moment'
 import Duration from './Duration'
@@ -43,7 +43,7 @@ const AthleteListRoute = ({
       <table>
         <thead>
           <tr>
-            <th></th>
+            <th />
             <th>Today</th>
             <th>Week</th>
             <th>Year</th>
@@ -51,10 +51,10 @@ const AthleteListRoute = ({
           </tr>
         </thead>
         <tbody>
-          {athleteList.map(({stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity}) => (
+          {athleteList.map(({ stravaId, firstName, lastName, todaySeconds, weekActiveDays, yearActiveDays, latestActivity }) => (
             <tr key={stravaId}>
               <td><Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link></td>
-              <td><input type='checkbox' disabled={true} checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;(<Duration seconds={todaySeconds} />)</>}</td>
+              <td><input type='checkbox' disabled checked={todaySeconds > 0} />{!!todaySeconds && <>&nbsp;(<Duration seconds={todaySeconds} />)</>}</td>
               <td>{weekActiveDays}/{dayOfWeek}</td>
               <td>{yearActiveDays}/{dayOfYear}</td>
               <td>{latestActivity && <Timestamp value={latestActivity.startDate} />}</td>

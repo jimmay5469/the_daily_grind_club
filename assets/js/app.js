@@ -1,14 +1,13 @@
 import 'phoenix_html'
 
 import React from 'react'
-import { render } from 'react-dom';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { createBrowserHistory } from 'history';
-import _ from 'lodash'
+import { render } from 'react-dom'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { createBrowserHistory } from 'history'
 import humps from 'humps'
 import moment from 'moment'
-import TheDailyGrindClubRouter from './router';
+import TheDailyGrindClubRouter from './router'
 
 import socket from './socket'
 
@@ -57,8 +56,8 @@ history.listen(() => { store.dispatch({ type: 'ROUTE_CHANGE' }) })
 
 const athletesChannel = socket.channel(`athletes:update_athlete`, {})
 athletesChannel.join()
-  .receive("ok", resp => { store.dispatch({ type: 'CONNECTED', athletes: humps.camelizeKeys(resp) }) })
-  .receive("error", resp => { store.dispatch({ type: 'DISCONNECTED' }) })
+  .receive('ok', resp => { store.dispatch({ type: 'CONNECTED', athletes: humps.camelizeKeys(resp) }) })
+  .receive('error', resp => { store.dispatch({ type: 'DISCONNECTED' }) })
 athletesChannel.onError(resp => { store.dispatch({ type: 'DISCONNECTED' }) })
 athletesChannel.on('update_athlete', resp => { store.dispatch({ type: 'UPDATE_ATHLETE', athlete: humps.camelizeKeys(resp) }) })
 
@@ -66,4 +65,4 @@ render((
   <Provider store={store}>
     <TheDailyGrindClubRouter history={history} />
   </Provider>
-), reactAppEl);
+), reactAppEl)
