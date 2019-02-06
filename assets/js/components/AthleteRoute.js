@@ -53,27 +53,39 @@ const AthleteRoute = ({
 
   return (
     <>
-      <h2>{athlete.firstName} {athlete.lastName}</h2>
-      <div>
+      <div class='columns'>
+        <div class='column'>
+          <h2 className='title is-3'>{athlete.firstName} {athlete.lastName}</h2>
+          <div>
         Today: <input type='checkbox' disabled checked={todayActivities.length > 0} /> (<Duration seconds={_.sumBy(todayActivities, 'movingTime')} />)&nbsp;
         Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} (<Duration seconds={_.sumBy(weekActivities, 'movingTime')} />)&nbsp;
         Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} (<Duration seconds={_.sumBy(yearActivities, 'movingTime')} />)
+          </div>
+        </div>
       </div>
-      <h3>Activity Types</h3>
-      {_.map(activityTypes, ({ type, seconds }) => (
-        <div key={type}>
-          {type} (<Duration seconds={seconds} />)
+      <div class='columns'>
+        <div class='column'>
+          <h3 className='title is-4'>Activity Types</h3>
+          {_.map(activityTypes, ({ type, seconds }) => (
+            <div key={type}>
+              {type} (<Duration seconds={seconds} />)
+            </div>
+          ))}
         </div>
-      ))}
-      <h3>Latest Activities</h3>
-      {yearActivities.slice(-5).reverse().map((activity) => (
-        <div key={activity.id}>
-          {activity.type} -&nbsp;
-          <strong>{activity.name}</strong> -&nbsp;
-          <Timestamp value={activity.startDate} />&nbsp;
+      </div>
+      <div class='columns'>
+        <div class='column'>
+          <h3 className='title is-4'>Latest Activities</h3>
+          {yearActivities.slice(-5).reverse().map((activity) => (
+            <div key={activity.id}>
+              {activity.type} -&nbsp;
+              <strong>{activity.name}</strong> -&nbsp;
+              <Timestamp value={activity.startDate} />&nbsp;
           (<Duration seconds={activity.movingTime} />)
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </>
   )
 }

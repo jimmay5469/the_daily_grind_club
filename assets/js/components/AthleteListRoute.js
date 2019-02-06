@@ -40,7 +40,7 @@ const AthleteListRoute = ({
 }) => (
   <>
     {!!athleteList.length &&
-      <table>
+      <table className='table'>
         <thead>
           <tr>
             <th />

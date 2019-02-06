@@ -46,12 +46,10 @@ const Layout = ({ children, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, at
     </nav>
     <main className='section'>
       <div className='container'>
-        <div className='content'>
-          {!stravaId && <a href={loginUrl}>Login with Strava</a>}
-          {stravaId && !athletes.length && <div>You need to join <a href='https://www.strava.com/clubs/thedailygrindclub'>The Daily Grind Club</a> on Strava to use this site.</div>}
-          {stravaId && !athletes.length && <div>Already joined? <a href={loginUrl}>Try logging in with Strva again.</a></div>}
-          {children}
-        </div>
+        {!stravaId && <a href={loginUrl}>Login with Strava</a>}
+        {stravaId && !athletes.length && <div>You need to join <a href='https://www.strava.com/clubs/thedailygrindclub'>The Daily Grind Club</a> on Strava to use this site.</div>}
+        {stravaId && !athletes.length && <div>Already joined? <a href={loginUrl}>Try logging in with Strva again.</a></div>}
+        {children}
       </div>
     </main>
   </>
