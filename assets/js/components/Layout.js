@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 
-const mapStateToProps = ({ hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes }) => ({
+const mapStateToProps = ({ connected, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes }) => ({
+  connected,
   hamburgerMenuOpen,
   loginUrl,
   logoutUrl,
@@ -16,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-const Layout = ({ children, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes, onHamburgerClick }) => (
+const Layout = ({ children, connected, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, athletes, onHamburgerClick }) => (
   <>
     <nav className='navbar has-shadow'>
       <div className='container'>
@@ -49,6 +50,14 @@ const Layout = ({ children, hamburgerMenuOpen, loginUrl, logoutUrl, stravaId, at
         {!stravaId && <a href={loginUrl}>Login with Strava</a>}
         {stravaId && !athletes.length && <div>You need to join <a href='https://www.strava.com/clubs/thedailygrindclub'>The Daily Grind Club</a> on Strava to use this site.</div>}
         {stravaId && !athletes.length && <div>Already joined? <a href={loginUrl}>Try logging in with Strva again.</a></div>}
+        {!!athletes.length && !connected && <div className='columns is-centered is-mobile'>
+          <div className='column is-narrow'>
+            <div className='tags has-addons'>
+              <span className='tag is-danger'>Disconnected!</span>
+              <span className='tag'>refresh the page to reconnect</span>
+            </div>
+          </div>
+        </div>}
         {children}
       </div>
     </main>
