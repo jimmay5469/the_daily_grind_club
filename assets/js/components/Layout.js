@@ -27,22 +27,22 @@ const Layout = ({ children, connected, hamburgerMenuOpen, loginUrl, logoutUrl, s
               <Link to='/'>The Daily Grind Club</Link>
             </h1>
           </div>
-          <a className={`navbar-burger ${hamburgerMenuOpen ? 'is-active' : ''}`} onClick={onHamburgerClick}>
+          {stravaId && !!athletes.length && <a className={`navbar-burger ${hamburgerMenuOpen ? 'is-active' : ''}`} onClick={onHamburgerClick}>
             <span />
             <span />
             <span />
-          </a>
+          </a>}
         </div>
-        <div className={`navbar-menu ${hamburgerMenuOpen ? 'is-active' : ''}`}>
+        {stravaId && !!athletes.length && <div className={`navbar-menu ${hamburgerMenuOpen ? 'is-active' : ''}`}>
           <div className='navbar-end'>
             <div className='navbar-item'>
-              {stravaId && !!athletes.length && <Link to='/'>Home</Link>}
+              <Link to='/'>Home</Link>
             </div>
             <div className='navbar-item'>
-              {stravaId && !!athletes.length && <a href={logoutUrl}>Logout</a>}
+              <a href={logoutUrl}>Logout</a>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </nav>
     {!!athletes.length && !connected && <div className='notification is-radiusless is-marginless is-paddingless has-text-centered'>Refresh to get the latest activities.</div>}
