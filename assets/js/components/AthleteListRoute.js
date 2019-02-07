@@ -8,7 +8,8 @@ import Timestamp from './Timestamp'
 import {
   getTodayActivities,
   getWeekActivities,
-  getYearActivities
+  getYearActivities,
+  getCurrentStreak
 } from '../utils/activityList'
 
 const mapStateToProps = ({ athletes }) => ({
@@ -20,9 +21,10 @@ const mapStateToProps = ({ athletes }) => ({
 
       return {
         ...athlete,
+        latestActivity: _.get(yearActivities.reverse(), '[0]'),
         todaySeconds: _.sumBy(todayActivities, 'movingTime'),
         weekActiveDays: Object.keys(_.groupBy(weekActivities, 'day')).length,
-        latestActivity: _.get(yearActivities.reverse(), '[0]')
+        streak: getCurrentStreak(athlete.activities)
       }
     })
     .sortBy(['latestActivity.startDate'])
@@ -39,7 +41,7 @@ const AthleteListRoute = ({
     <div className='column is-three-fifths'>
       {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
       {!!athleteList.length &&
-      athleteList.map(({ stravaId, firstName, lastName, todaySeconds, weekActiveDays, latestActivity }) => (
+      athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak }) => (
         <div key={stravaId} className='box'>
           <div className='columns is-mobile'>
             <div className='column'>
@@ -69,6 +71,12 @@ const AthleteListRoute = ({
                     {weekActiveDays !== dayOfWeek && weekActiveDays !== 0 && <span className='tag is-warning'>{weekActiveDays}/{dayOfWeek}</span>}
                   </div>
                 </div>
+                {!!streak && <div className='control'>
+                  <div className='tags has-addons'>
+                    <span className='tag'>Streak</span>
+                    <span className='tag is-success'>{streak}</span>
+                  </div>
+                </div>}
               </div>
             </div>
           </div>
