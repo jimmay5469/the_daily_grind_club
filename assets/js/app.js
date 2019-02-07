@@ -52,7 +52,10 @@ const store = createStore(
 )
 
 const history = createBrowserHistory()
-history.listen(() => { store.dispatch({ type: 'ROUTE_CHANGE' }) })
+history.listen(() => {
+  window.scrollTo(0, 0)
+  store.dispatch({ type: 'ROUTE_CHANGE' })
+})
 
 const athletesChannel = socket.channel(`athletes:update_athlete`, {})
 athletesChannel.join()
