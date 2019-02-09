@@ -14,7 +14,7 @@ defmodule TheDailyGrindClub.Application do
       TheDailyGrindClubWeb.Endpoint,
       # Starts a worker by calling: TheDailyGrindClub.Worker.start_link(arg)
       # {TheDailyGrindClub.Worker, arg},
-      TheDailyGrindClub.StravaSync
+      TheDailyGrindClub.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -17,6 +17,11 @@ config :the_daily_grind_club, TheDailyGrindClubWeb.Endpoint,
   render_errors: [view: TheDailyGrindClubWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: TheDailyGrindClub.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :the_daily_grind_club, TheDailyGrindClub.Scheduler,
+  jobs: [
+    {"*/15 * * * *", {TheDailyGrindClub.Strava, :fetch_all_activities, []}}
+  ]
+
 # Custom configuration
 config :the_daily_grind_club, TheDailyGrindClub.Strava,
   backend: TheDailyGrindClub.Strava.StravaBackend
