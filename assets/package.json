@@ -15,7 +15,6 @@
     "humps": "^2.0.1",
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
-    "material-color-hash": "^0.1.6",
     "moment": "^2.23.0",
     "parcel-bundler": "^1.11.0",
     "phoenix": "file:../deps/phoenix",

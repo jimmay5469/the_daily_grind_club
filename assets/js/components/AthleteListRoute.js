@@ -5,12 +5,15 @@ import _ from 'lodash'
 import moment from 'moment'
 import Duration from './Duration'
 import Timestamp from './Timestamp'
+import ColorHash from 'color-hash'
 import {
   getTodayActivities,
   getWeekActivities,
   getYearActivities,
   getCurrentStreak
 } from '../utils/activityList'
+
+const colorHash = new ColorHash({ saturation: 1 })
 
 const mapStateToProps = ({ athletes }) => ({
   athleteList: _.chain(athletes)
@@ -24,7 +27,17 @@ const mapStateToProps = ({ athletes }) => ({
         latestActivity: _.get(yearActivities.reverse(), '[0]'),
         todaySeconds: _.sumBy(todayActivities, 'movingTime'),
         weekActiveDays: Object.keys(_.groupBy(weekActivities, 'day')).length,
-        streak: getCurrentStreak(athlete.activities)
+        streak: getCurrentStreak(athlete.activities),
+        yearSeconds: _.sumBy(yearActivities, 'movingTime'),
+        activityTypes: _.chain(yearActivities)
+          .groupBy('type')
+          .map((activities) => ({
+            type: activities[0].type,
+            seconds: _.sumBy(activities, 'movingTime')
+          }))
+          .sortBy('seconds')
+          .reverse()
+          .value()
       }
     })
     .sortBy(['latestActivity.startDate'])
@@ -41,9 +54,13 @@ const AthleteListRoute = ({
     <div className='column is-three-fifths'>
       {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
       {!!athleteList.length &&
-      athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak }) => (
+      athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak, yearSeconds, activityTypes }) => (
         <div key={stravaId}>
-          <div className='stripe' />
+          <div className='stripe'>
+            {_.map(activityTypes, ({ type, seconds }) => (
+              <div key={type} style={{ width: `${100 * seconds / yearSeconds}%`, backgroundColor: colorHash.hex(type) }} />
+            ))}
+          </div>
           <div className='box is-radiusless'>
             <div className='columns is-mobile'>
               <div className='column'>

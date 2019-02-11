@@ -9,6 +9,10 @@ $navbar-box-shadow-size: 0px 1px 0px 0px;
 
 .stripe {
   height: 5px;
-  background-color: $primary;
   margin: $box-padding -1px 0 -1px;
+  display: flex;
+
+  >div {
+    height: 100%;
+  }
 }
