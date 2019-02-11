@@ -42,41 +42,44 @@ const AthleteListRoute = ({
       {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
       {!!athleteList.length &&
       athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak }) => (
-        <div key={stravaId} className='box'>
-          <div className='columns is-mobile'>
-            <div className='column'>
-              <Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link>
+        <div key={stravaId}>
+          <div className='stripe' />
+          <div className='box is-radiusless'>
+            <div className='columns is-mobile'>
+              <div className='column'>
+                <Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link>
+              </div>
+              <div className='column has-text-right'>
+                {latestActivity && <Timestamp value={latestActivity.startDate} />}
+              </div>
             </div>
-            <div className='column has-text-right'>
-              {latestActivity && <Timestamp value={latestActivity.startDate} />}
-            </div>
-          </div>
-          <div className='columns'>
-            <div className='column'>
-              <div className='field is-grouped is-grouped-multiline'>
-                <div className='control'>
-                  <div className='tags has-addons'>
-                    <span className='tag'>Today</span>
-                    {todaySeconds > 0
-                      ? <span className='tag is-success'><Duration seconds={todaySeconds} /></span>
-                      : <span className='tag is-danger'>No</span>
-                    }
+            <div className='columns'>
+              <div className='column'>
+                <div className='field is-grouped is-grouped-multiline'>
+                  <div className='control'>
+                    <div className='tags has-addons'>
+                      <span className='tag'>Today</span>
+                      {todaySeconds > 0
+                        ? <span className='tag is-success'><Duration seconds={todaySeconds} /></span>
+                        : <span className='tag is-danger'>No</span>
+                      }
+                    </div>
                   </div>
+                  <div className='control'>
+                    <div className='tags has-addons'>
+                      <span className='tag'>Week</span>
+                      {weekActiveDays === dayOfWeek && <span className='tag is-success'>{weekActiveDays}/{dayOfWeek}</span>}
+                      {weekActiveDays === 0 && <span className='tag is-danger'>{weekActiveDays}/{dayOfWeek}</span>}
+                      {weekActiveDays !== dayOfWeek && weekActiveDays !== 0 && <span className='tag is-warning'>{weekActiveDays}/{dayOfWeek}</span>}
+                    </div>
+                  </div>
+                  {!!streak && <div className='control'>
+                    <div className='tags has-addons'>
+                      <span className='tag'>Streak</span>
+                      <span className='tag is-success'>{streak}</span>
+                    </div>
+                  </div>}
                 </div>
-                <div className='control'>
-                  <div className='tags has-addons'>
-                    <span className='tag'>Week</span>
-                    {weekActiveDays === dayOfWeek && <span className='tag is-success'>{weekActiveDays}/{dayOfWeek}</span>}
-                    {weekActiveDays === 0 && <span className='tag is-danger'>{weekActiveDays}/{dayOfWeek}</span>}
-                    {weekActiveDays !== dayOfWeek && weekActiveDays !== 0 && <span className='tag is-warning'>{weekActiveDays}/{dayOfWeek}</span>}
-                  </div>
-                </div>
-                {!!streak && <div className='control'>
-                  <div className='tags has-addons'>
-                    <span className='tag'>Streak</span>
-                    <span className='tag is-success'>{streak}</span>
-                  </div>
-                </div>}
               </div>
             </div>
           </div>
