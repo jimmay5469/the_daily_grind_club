@@ -15,8 +15,8 @@ import {
 
 const colorHash = new ColorHash({ saturation: 1 })
 
-const mapStateToProps = ({ athletes }) => ({
-  athleteList: _.chain(athletes)
+const mapStateToProps = ({ athletes }) => {
+  const athleteList = _.chain(athletes)
     .map((athlete) => {
       const todayActivities = getTodayActivities(athlete.activities)
       const weekActivities = getWeekActivities(athlete.activities)
@@ -31,8 +31,8 @@ const mapStateToProps = ({ athletes }) => ({
         yearSeconds: _.sumBy(yearActivities, 'movingTime'),
         activityTypes: _.chain(yearActivities)
           .groupBy('type')
-          .map((activities) => ({
-            type: activities[0].type,
+          .map((activities, type) => ({
+            type,
             seconds: _.sumBy(activities, 'movingTime')
           }))
           .sortBy('seconds')
@@ -42,19 +42,35 @@ const mapStateToProps = ({ athletes }) => ({
     })
     .sortBy(['latestActivity.startDate'])
     .reverse()
-    .value(),
-  dayOfWeek: moment().isoWeekday()
-})
+    .value()
+
+  return {
+    athleteList,
+    activityTypes: _.chain(athleteList)
+      .map((athlete) => athlete.activityTypes.map((activityType) => ({ ...activityType, athlete })))
+      .flatten()
+      .groupBy('type')
+      .map((athleteActivity, type) => ({
+        type,
+        topAthlete: _.maxBy(athleteActivity, 'seconds'),
+        totalSeconds: _.sumBy(athleteActivity, 'seconds')
+      }))
+      .sortBy('totalSeconds')
+      .reverse()
+      .value(),
+    dayOfWeek: moment().isoWeekday()
+  }
+}
 
 const AthleteListRoute = ({
   athleteList,
+  activityTypes,
   dayOfWeek
 }) => (
-  <div className='columns is-centered'>
-    <div className='column is-three-fifths'>
+  <div className='columns'>
+    <div className='column'>
       {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
-      {!!athleteList.length &&
-      athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak, yearSeconds, activityTypes }) => (
+      {athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak, yearSeconds, activityTypes }) => (
         <div key={stravaId}>
           <div className='stripe'>
             {_.map(activityTypes, ({ type, seconds }) => (
@@ -64,7 +80,7 @@ const AthleteListRoute = ({
           <div className='box is-radiusless'>
             <div className='columns is-mobile'>
               <div className='column'>
-                <Link to={`/athletes/${stravaId}`}>{firstName} {lastName}</Link>
+                <strong><Link to={`/athletes/${stravaId}`} className='has-text-dark'>{firstName} {lastName}</Link></strong>
               </div>
               <div className='column has-text-right'>
                 {latestActivity && <Timestamp value={latestActivity.startDate} />}
@@ -78,16 +94,17 @@ const AthleteListRoute = ({
                       <span className='tag'>Today</span>
                       {todaySeconds > 0
                         ? <span className='tag is-success'><Duration seconds={todaySeconds} /></span>
-                        : <span className='tag is-danger'>No</span>
+                        : <span className='tag is-dark'>No</span>
                       }
                     </div>
                   </div>
                   <div className='control'>
                     <div className='tags has-addons'>
                       <span className='tag'>Week</span>
-                      {weekActiveDays === dayOfWeek && <span className='tag is-success'>{weekActiveDays}/{dayOfWeek}</span>}
-                      {weekActiveDays === 0 && <span className='tag is-danger'>{weekActiveDays}/{dayOfWeek}</span>}
-                      {weekActiveDays !== dayOfWeek && weekActiveDays !== 0 && <span className='tag is-warning'>{weekActiveDays}/{dayOfWeek}</span>}
+                      {weekActiveDays === dayOfWeek
+                        ? <span className='tag is-success'>{weekActiveDays}/{dayOfWeek}</span>
+                        : <span className='tag is-dark'>{weekActiveDays}/{dayOfWeek}</span>
+                      }
                     </div>
                   </div>
                   {!!streak && <div className='control'>
@@ -103,6 +120,19 @@ const AthleteListRoute = ({
         </div>
       ))
       }
+    </div>
+    <div className='column is-narrow'>
+      {!!activityTypes.length && <h3 className='title is-4'>Activity Types</h3>}
+      {activityTypes.map(({ type, topAthlete: { athlete, seconds }, totalSeconds }) => (
+        <div key={type} className='box is-radiusless is-shadowless is-paddingless'>
+          <div>
+            <div className='type-swatch' style={{ backgroundColor: colorHash.hex(type) }} /> <strong>{_.words(type).join(' ')}</strong> (<Duration seconds={totalSeconds} />)
+          </div>
+          <div>
+          Leader: {athlete.firstName} {athlete.lastName} (<Duration seconds={seconds} />)
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 )

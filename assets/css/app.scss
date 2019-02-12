@@ -9,10 +9,17 @@ $navbar-box-shadow-size: 0px 1px 0px 0px;
 
 .stripe {
   height: 5px;
-  margin: $box-padding -1px 0 -1px;
+  margin: $box-padding -2px 0 -1px;
   display: flex;
 
   >div {
     height: 100%;
+    border-right: 1px solid $white;
   }
+}
+
+.type-swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
 }
