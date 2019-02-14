@@ -59,7 +59,7 @@ const AthleteListRoute = ({
       {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
       {athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak, yearSeconds, activityTypes }) => (
         <div key={stravaId} className='athlete-box box is-radiusless'>
-          <div className='stripe'>
+          <div className='activity-type-stripe'>
             {_.map(activityTypes, ({ type, seconds }) => (
               <div key={type} style={{ width: `${100 * seconds / yearSeconds}%`, backgroundColor: colorHash.hex(type) }} />
             ))}
@@ -103,8 +103,8 @@ const AthleteListRoute = ({
             </div>
             <div className='column is-narrow'>
               {_.chain(activityTypes).take(3).map(({ type, seconds }) => (
-                <div key={type} className='athlete-type-list'>
-                  <div className='type-swatch' style={{ backgroundColor: colorHash.hex(type) }} /> {_.words(type).join(' ')}
+                <div key={type} className='athlete-activity-type'>
+                  <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(type) }} /> {_.words(type).join(' ')}
                 </div>
               )).value()}
             </div>

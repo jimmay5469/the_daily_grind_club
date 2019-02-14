@@ -7,7 +7,7 @@ $navbar-box-shadow-size: 0px 1px 0px 0px;
 
 @import "../node_modules/bulma";
 
-.type-swatch {
+.activity-type-swatch {
   display: inline-block;
   width: 0.75em;
   height: 0.75em;
@@ -18,7 +18,7 @@ $navbar-box-shadow-size: 0px 1px 0px 0px;
     position: relative;
   }
 
-  .stripe {
+  .activity-type-stripe {
     position: absolute;
     top: 0;
     left: 0;
@@ -35,7 +35,7 @@ $navbar-box-shadow-size: 0px 1px 0px 0px;
     }
   }
 
-  .athlete-type-list {
+  .athlete-activity-type {
     display: inline-block;
 
     &:not(:first-child) {
