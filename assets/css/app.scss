@@ -6,3 +6,40 @@ $section-padding: 1rem 1rem;
 $navbar-box-shadow-size: 0px 1px 0px 0px;
 
 @import "../node_modules/bulma";
+
+.activity-type-swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+}
+
+.athlete-list-route {
+  .athlete-box {
+    position: relative;
+  }
+
+  .activity-type-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    display: flex;
+
+    >div {
+      height: 100%;
+
+      &:not(:first-child) {
+        border-left: 1px solid $white;
+      }
+    }
+  }
+
+  .athlete-activity-type {
+    display: inline-block;
+
+    &:not(:first-child) {
+      margin-left: 0.75em;
+    }
+  }
+}

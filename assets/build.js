@@ -31,7 +31,7 @@ function cleanPrivStatic () {
   execSync('rm -rf ../priv/static/')
 }
 function fixStaticFileReferences () {
-  execSync(String.raw`find ../priv/static/css/ -maxdepth 1 -name *.css -exec sed -i '' -e 's/static\//..\//g' {} \;`)
+  execSync(String.raw`find ../priv/static/css/ -maxdepth 1 -name '*.css' -exec sed -i -e 's/static\//..\//g' {} \;`)
 }
 function putStaticFilesInTheRightPlace () {
   if (fs.existsSync('../priv/static/static/')) {

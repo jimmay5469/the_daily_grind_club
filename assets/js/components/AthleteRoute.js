@@ -4,11 +4,14 @@ import _ from 'lodash'
 import moment from 'moment'
 import Duration from './Duration'
 import Timestamp from './Timestamp'
+import ColorHash from 'color-hash'
 import {
   getTodayActivities,
   getWeekActivities,
   getYearActivities
 } from '../utils/activityList'
+
+const colorHash = new ColorHash({ saturation: 1 })
 
 const mapStateToProps = ({ athletes }, { match: { params: { id } } }) => {
   const athlete = _.find(athletes, { 'stravaId': Number(id) })
@@ -68,7 +71,7 @@ const AthleteRoute = ({
           <h3 className='title is-4'>Activity Types</h3>
           {_.map(activityTypes, ({ type, seconds }) => (
             <div key={type}>
-              {type} (<Duration seconds={seconds} />)
+              <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(type) }} /> {_.words(type).join(' ')} (<Duration seconds={seconds} />)
             </div>
           ))}
         </div>
@@ -78,7 +81,7 @@ const AthleteRoute = ({
           <h3 className='title is-4'>Latest Activities</h3>
           {yearActivities.slice(-5).reverse().map((activity) => (
             <div key={activity.id}>
-              {activity.type} -&nbsp;
+              <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(activity.type) }} /> {_.words(activity.type).join(' ')} -&nbsp;
               <strong>{activity.name}</strong> -&nbsp;
               <Timestamp value={activity.startDate} />&nbsp;
           (<Duration seconds={activity.movingTime} />)
