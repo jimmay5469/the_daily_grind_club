@@ -7,27 +7,39 @@ $navbar-box-shadow-size: 0px 1px 0px 0px;
 
 @import "../node_modules/bulma";
 
-.stripe {
-  height: 5px;
-  margin: $box-padding -2px 0 -1px;
-  display: flex;
-
-  >div {
-    height: 100%;
-    border-right: 1px solid $white;
-  }
-}
-
 .type-swatch {
   display: inline-block;
   width: 0.75em;
   height: 0.75em;
 }
 
-.horizontal-type-list-item {
-  display: inline-block;
+.athlete-list-route {
+  .athlete-box {
+    position: relative;
+  }
 
-  &:not(:first-child) {
-    margin-left: 0.75em;
+  .stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    display: flex;
+
+    >div {
+      height: 100%;
+
+      &:not(:first-child) {
+        border-left: 1px solid $white;
+      }
+    }
+  }
+
+  .athlete-type-list {
+    display: inline-block;
+
+    &:not(:first-child) {
+      margin-left: 0.75em;
+    }
   }
 }
