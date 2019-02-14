@@ -46,29 +46,16 @@ const mapStateToProps = ({ athletes }) => {
 
   return {
     athleteList,
-    activityTypes: _.chain(athleteList)
-      .map((athlete) => athlete.activityTypes.map((activityType) => ({ ...activityType, athlete })))
-      .flatten()
-      .groupBy('type')
-      .map((athleteActivity, type) => ({
-        type,
-        topAthlete: _.maxBy(athleteActivity, 'seconds'),
-        totalSeconds: _.sumBy(athleteActivity, 'seconds')
-      }))
-      .sortBy('totalSeconds')
-      .reverse()
-      .value(),
     dayOfWeek: moment().isoWeekday()
   }
 }
 
 const AthleteListRoute = ({
   athleteList,
-  activityTypes,
   dayOfWeek
 }) => (
-  <div className='columns'>
-    <div className='column'>
+  <div className='columns is-centered'>
+    <div className='column is-three-quarters-widescreen'>
       {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
       {athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak, yearSeconds, activityTypes }) => (
         <div key={stravaId}>
@@ -82,7 +69,7 @@ const AthleteListRoute = ({
               <div className='column'>
                 <strong><Link to={`/athletes/${stravaId}`} className='has-text-dark'>{firstName} {lastName}</Link></strong>
               </div>
-              <div className='column has-text-right'>
+              <div className='column is-narrow'>
                 {latestActivity && <Timestamp value={latestActivity.startDate} />}
               </div>
             </div>
@@ -115,24 +102,18 @@ const AthleteListRoute = ({
                   </div>}
                 </div>
               </div>
+              <div className='column is-narrow'>
+                {_.chain(activityTypes).take(3).map(({ type, seconds }) => (
+                  <div key={type} className='horizontal-type-list-item'>
+                    <div className='type-swatch' style={{ backgroundColor: colorHash.hex(type) }} /> {_.words(type).join(' ')}
+                  </div>
+                )).value()}
+              </div>
             </div>
           </div>
         </div>
       ))
       }
-    </div>
-    <div className='column is-narrow'>
-      {!!activityTypes.length && <h3 className='title is-4'>Activity Types</h3>}
-      {activityTypes.map(({ type, topAthlete: { athlete, seconds }, totalSeconds }) => (
-        <div key={type} className='box is-radiusless is-shadowless is-paddingless'>
-          <div>
-            <div className='type-swatch' style={{ backgroundColor: colorHash.hex(type) }} /> <strong>{_.words(type).join(' ')}</strong> (<Duration seconds={totalSeconds} />)
-          </div>
-          <div>
-          Leader: {athlete.firstName} {athlete.lastName} (<Duration seconds={seconds} />)
-          </div>
-        </div>
-      ))}
     </div>
   </div>
 )
