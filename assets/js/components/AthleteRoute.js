@@ -81,9 +81,7 @@ const AthleteRoute = ({
           <h3 className='title is-4'>Latest Activities</h3>
           {yearActivities.slice(-5).reverse().map((activity) => (
             <div key={activity.id}>
-              <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(activity.type) }} /> {_.words(activity.type).join(' ')} -&nbsp;
-              <strong>{activity.name}</strong> -&nbsp;
-              <Timestamp value={activity.startDate} />&nbsp;
+              <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(activity.type) }} /> {_.words(activity.type).join(' ')} | {activity.name} | <Timestamp value={activity.startDate} />&nbsp;
           (<Duration seconds={activity.movingTime} />)
             </div>
           ))}
