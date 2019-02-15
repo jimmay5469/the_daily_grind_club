@@ -48,7 +48,12 @@ const Layout = ({ children, connected, hamburgerMenuOpen, loginUrl, logoutUrl, s
     {!!athletes.length && !connected && <div className='notification is-radiusless is-marginless is-paddingless has-text-centered'>Refresh to get the latest activities.</div>}
     <main className='section'>
       <div className='container'>
-        {!stravaId && <a href={loginUrl}>Login with Strava</a>}
+        {!stravaId && <a href={loginUrl} className='button is-primary'>
+          <span className='icon'>
+            <i className='fab fa-strava' />
+          </span>
+          <span>Login with Strava</span>
+        </a>}
         {stravaId && !athletes.length && <div>You need to join <a href='https://www.strava.com/clubs/thedailygrindclub'>The Daily Grind Club</a> on Strava to use this site.</div>}
         {stravaId && !athletes.length && <div>Already joined? <a href={loginUrl}>Try logging in with Strva again.</a></div>}
         {children}
