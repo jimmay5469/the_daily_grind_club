@@ -6,17 +6,9 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { createBrowserHistory } from 'history'
 import humps from 'humps'
-import moment from 'moment'
 import TheDailyGrindClubRouter from './router'
 
 import socket from './socket'
-
-moment.relativeTimeThreshold('M', 12)
-moment.relativeTimeThreshold('d', 30)
-moment.relativeTimeThreshold('h', 24)
-moment.relativeTimeThreshold('m', 60)
-moment.relativeTimeThreshold('s', 60)
-moment.relativeTimeThreshold('ss', 1)
 
 const reactAppEl = document.querySelector('[data-react-app]')
 
