@@ -5,4 +5,23 @@
   data-logout-url="<%= Routes.athlete_path(TheDailyGrindClubWeb.Endpoint, :logout) %>"
   data-athletes="<%= athletes_json(@athletes) %>"
 >
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered is-mobile">
+          <div class="column is-narrow">
+            <span class="icon is-large">
+              <i class="fas fa-2x fa-sync-alt"></i>
+            </span>
+            <span class="icon is-large">
+              <i class="fab fa-2x fa-strava"></i>
+            </span>
+            <span class="icon is-large">
+              <i class="far fa-2x fa-calendar-alt"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
