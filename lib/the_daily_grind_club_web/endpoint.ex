@@ -13,7 +13,7 @@ defmodule TheDailyGrindClubWeb.Endpoint do
     at: "/",
     from: :the_daily_grind_club,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(node_modules css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

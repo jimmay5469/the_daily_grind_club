@@ -50,3 +50,4 @@ Caddyfile
 
 # Parcel
 /assets/.cache/
+/assets/static/node_modules/

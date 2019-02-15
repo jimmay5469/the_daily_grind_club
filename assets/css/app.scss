@@ -1,5 +1,11 @@
 /* This file is for your main application css. */
 
+$fa-font-path: "../static/node_modules/@fortawesome/fontawesome-free/webfonts";
+@import "./node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+@import "./node_modules/@fortawesome/fontawesome-free/scss/brands";
+@import "./node_modules/@fortawesome/fontawesome-free/scss/regular";
+@import "./node_modules/@fortawesome/fontawesome-free/scss/solid";
+
 $primary: #FC4C02;
 $link: $primary;
 $section-padding: 1rem 1rem;

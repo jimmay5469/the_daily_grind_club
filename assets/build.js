@@ -16,6 +16,7 @@ const options = {
 
 (async () => {
   cleanPrivStatic()
+  importNodeAssets()
 
   const bundler = new Bundler(entryFiles, options)
 
@@ -29,6 +30,11 @@ const options = {
 
 function cleanPrivStatic () {
   execSync('rm -rf ../priv/static/')
+}
+function importNodeAssets () {
+  execSync('rm -rf ./static/node_modules')
+  execSync('mkdir -p ./static/node_modules/@fortawesome/fontawesome-free/webfonts')
+  execSync('cp ./node_modules/@fortawesome/fontawesome-free/webfonts/** ./static/node_modules/@fortawesome/fontawesome-free/webfonts/')
 }
 function fixStaticFileReferences () {
   execSync(String.raw`find ../priv/static/css/ -maxdepth 1 -name '*.css' -exec sed -i -e 's/static\//..\//g' {} \;`)
