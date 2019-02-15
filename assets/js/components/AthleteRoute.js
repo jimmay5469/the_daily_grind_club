@@ -60,9 +60,7 @@ const AthleteRoute = ({
         <div className='column'>
           <h2 className='title is-3'>{athlete.firstName} {athlete.lastName}</h2>
           <div>
-        Today: <input type='checkbox' disabled checked={todayActivities.length > 0} /> (<Duration seconds={_.sumBy(todayActivities, 'movingTime')} />)&nbsp;
-        Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} (<Duration seconds={_.sumBy(weekActivities, 'movingTime')} />)&nbsp;
-        Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} (<Duration seconds={_.sumBy(yearActivities, 'movingTime')} />)
+        Today: <input type='checkbox' disabled checked={todayActivities.length > 0} /> (<Duration seconds={_.sumBy(todayActivities, 'movingTime')} />) Week: {Object.keys(_.groupBy(weekActivities, 'day')).length}/{dayOfWeek} (<Duration seconds={_.sumBy(weekActivities, 'movingTime')} />) Year: {Object.keys(_.groupBy(yearActivities, 'day')).length}/{dayOfYear} (<Duration seconds={_.sumBy(yearActivities, 'movingTime')} />)
           </div>
         </div>
       </div>
@@ -81,8 +79,7 @@ const AthleteRoute = ({
           <h3 className='title is-4'>Latest Activities</h3>
           {yearActivities.slice(-5).reverse().map((activity) => (
             <div key={activity.id}>
-              <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(activity.type) }} /> {_.words(activity.type).join(' ')} | {activity.name} | <Timestamp value={activity.startDate} />&nbsp;
-          (<Duration seconds={activity.movingTime} />)
+              <div className='activity-type-swatch' style={{ backgroundColor: colorHash.hex(activity.type) }} /> {_.words(activity.type).join(' ')} | {activity.name} | <Timestamp value={activity.startDate} /> (<Duration seconds={activity.movingTime} />)
             </div>
           ))}
         </div>
