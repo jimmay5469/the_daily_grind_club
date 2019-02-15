@@ -45,7 +45,7 @@ const Layout = ({ children, connected, hamburgerMenuOpen, loginUrl, logoutUrl, s
         </div>}
       </div>
     </nav>
-    {!!athletes.length && !connected && <div className='notification is-radiusless is-marginless is-paddingless has-text-centered'>Refresh to get the latest activities.</div>}
+    {!!athletes.length && !connected && <div className='notification is-radiusless is-marginless is-paddingless has-text-centered'><span className='icon'><i className='fas fa-redo-alt' /></span><a href={window.location.href}>Refresh to get the latest activities.</a></div>}
     <main className='section'>
       <div className='container'>
         {!stravaId && <a href={loginUrl} className='button is-primary'>
