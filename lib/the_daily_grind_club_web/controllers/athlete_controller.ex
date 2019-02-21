@@ -23,60 +23,8 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   end
 
   def token_exchange(conn, %{"code" => code}) do
-    {:ok, response} =
-      HTTPoison.post(
-        "https://www.strava.com/oauth/token",
-        {:form,
-         [
-           client_id: Application.get_env(:the_daily_grind_club, Strava)[:strava_client_id],
-           client_secret:
-             Application.get_env(:the_daily_grind_club, Strava)[:strava_client_secret],
-           grant_type: "authorization_code",
-           code: code
-         ]}
-      )
-
-    response_body = Poison.decode!(response.body)
-
-    athlete =
-      try do
-        {:ok, athlete} =
-          response_body["athlete"]["id"]
-          |> Athletes.get_athlete_by_strava_id()
-          |> Athletes.update_athlete(%{
-            first_name: response_body["athlete"]["firstname"],
-            last_name: response_body["athlete"]["lastname"],
-            access_token: response_body["access_token"],
-            access_token_expiration: response_body["expires_at"],
-            refresh_token: response_body["refresh_token"]
-          })
-
-        Strava.fetch_athlete_activities(athlete)
-        athlete
-      rescue
-        Ecto.NoResultsError ->
-          case Strava.is_authorized(response_body["access_token"]) do
-            false ->
-              %{strava_id: response_body["athlete"]["id"]}
-
-            true ->
-              {:ok, athlete} =
-                Athletes.create_athlete(%{
-                  strava_id: response_body["athlete"]["id"],
-                  first_name: response_body["athlete"]["firstname"],
-                  last_name: response_body["athlete"]["lastname"],
-                  access_token: response_body["access_token"],
-                  access_token_expiration: response_body["expires_at"],
-                  refresh_token: response_body["refresh_token"]
-                })
-
-              Strava.fetch_athlete_activities(athlete)
-              athlete
-          end
-      end
-
     conn
-    |> put_session(:strava_id, athlete.strava_id)
+    |> put_session(:strava_id, Strava.get_strava_id_by_oauth_code(code))
     |> redirect(to: "/")
   end
 

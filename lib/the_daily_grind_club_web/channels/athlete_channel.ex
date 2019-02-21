@@ -13,12 +13,10 @@ defmodule TheDailyGrindClubWeb.AthleteChannel do
 
       {:ok,
        Athletes.list_athletes()
-       |> TheDailyGrindClubWeb.AthleteView.athletes_map(), socket}
+       |> Enum.map(&TheDailyGrindClubWeb.AthleteView.athlete_map/1), socket}
     rescue
       Ecto.NoResultsError ->
-        {:ok,
-         []
-         |> TheDailyGrindClubWeb.AthleteView.athletes_map(), socket}
+        {:ok, [], socket}
     end
   end
 

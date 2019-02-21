@@ -1,7 +1,6 @@
 #!/bin/bash
 
-if [ $MIX_ENV == "prod" ]
-then
+if [ $MIX_ENV="prod" ]; then
   mix deps.get --only prod
   mix compile
   cd assets && npm install && npm run deploy; cd -

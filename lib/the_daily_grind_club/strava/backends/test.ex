@@ -1,4 +1,6 @@
-defmodule TheDailyGrindClub.Strava.TestBackend do
+defmodule TheDailyGrindClub.Strava.Backends.Test do
+  @behaviour TheDailyGrindClub.Strava.Backends
+
   alias TheDailyGrindClub.Athletes.Athlete
 
   @sample_response """
@@ -1877,14 +1879,27 @@ defmodule TheDailyGrindClub.Strava.TestBackend do
     }]
   """
 
+  @impl true
   def fetch_athlete_activities(%Athlete{}) do
     Poison.decode!(@sample_response)
   end
 
-  def fetch_athlete(access_token) do
+  @impl true
+  def fetch_athlete(_access_token) do
     %{"clubs" => [%{"id" => 493_369}]}
   end
 
+  @impl true
+  def get_oauth_authorization_url() do
+    "/token_exchange?code=test"
+  end
+
+  @impl true
+  def get_strava_id_by_oauth_code(_code) do
+    "17683278"
+  end
+
+  @impl true
   def refresh_access_token(%Athlete{} = athlete) do
     athlete
   end

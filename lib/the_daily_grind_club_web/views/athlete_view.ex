@@ -1,20 +1,6 @@
 defmodule TheDailyGrindClubWeb.AthleteView do
   use TheDailyGrindClubWeb, :view
 
-  alias TheDailyGrindClub.Athletes.Athlete
-
-  def strava_login_url do
-    "https://www.strava.com/oauth/authorize?client_id=#{
-      Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Strava)[:strava_client_id]
-    }&response_type=code&redirect_uri=#{
-      Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Strava)[:strava_redirect_url]
-    }&scope=read,profile:read_all,activity:read"
-  end
-
-  def athletes_map(athletes) do
-    Enum.map(athletes, &athlete_map/1)
-  end
-
   def athlete_map(athlete) do
     %{
       id: athlete.id,

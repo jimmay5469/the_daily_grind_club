@@ -8,7 +8,7 @@ defmodule TheDailyGrindClubWeb.UserSocket do
       {:ok, strava_id} ->
         {:ok, assign(socket, :strava_id, strava_id)}
 
-      {:error, reason} ->
+      {:error, _reason} ->
         :error
     end
   end

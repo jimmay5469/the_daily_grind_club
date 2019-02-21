@@ -21,15 +21,13 @@ defmodule TheDailyGrindClub.Strava do
     })
   end
 
-  def update_athlete_activities(%Athlete{} = athlete, _), do: nil
+  def update_athlete_activities(%Athlete{}, _), do: nil
 
-  def is_authorized(access_token) do
-    if @config[:backend].fetch_athlete(access_token)["clubs"] do
-      @config[:backend].fetch_athlete(access_token)["clubs"]
-      |> Stream.map(& &1["id"])
-      |> Enum.member?(493_369)
-    else
-      false
-    end
+  def get_login_url do
+    @config[:backend].get_oauth_authorization_url()
+  end
+
+  def get_strava_id_by_oauth_code(code) do
+    @config[:backend].get_strava_id_by_oauth_code(code)
   end
 end
