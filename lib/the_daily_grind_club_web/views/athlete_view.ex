@@ -11,12 +11,6 @@ defmodule TheDailyGrindClubWeb.AthleteView do
     }&scope=read,profile:read_all,activity:read"
   end
 
-  def athletes_json(athletes) do
-    athletes
-    |> athletes_map()
-    |> Poison.encode!()
-  end
-
   def athletes_map(athletes) do
     Enum.map(athletes, &athlete_map/1)
   end

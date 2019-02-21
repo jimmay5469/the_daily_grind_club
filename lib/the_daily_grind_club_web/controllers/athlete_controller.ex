@@ -7,7 +7,7 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   def index(conn, _params) do
     case get_session(conn, :strava_id) do
       nil ->
-        render(conn, "index.html", athletes: [])
+        render(conn, "index.html", is_authorized: false)
 
       strava_id ->
         try do
@@ -15,9 +15,9 @@ defmodule TheDailyGrindClubWeb.AthleteController do
           |> Athletes.get_athlete_by_strava_id()
           |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
 
-          render(conn, "index.html", athletes: Athletes.list_athletes())
+          render(conn, "index.html", is_authorized: true)
         rescue
-          Ecto.NoResultsError -> render(conn, "index.html", athletes: [])
+          Ecto.NoResultsError -> render(conn, "index.html", is_authorized: false)
         end
     end
   end

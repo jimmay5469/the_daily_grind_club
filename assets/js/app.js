@@ -12,12 +12,11 @@ import socket from './socket'
 
 const reactAppEl = document.querySelector('[data-react-app]')
 
-const athletes = humps.camelizeKeys(JSON.parse(reactAppEl.dataset.athletes))
 const initialState = {
   hamburgerMenuOpen: false,
   connected: true,
   stravaId: reactAppEl.dataset.stravaId,
-  athletes: athletes,
+  isAuthorized: JSON.parse(reactAppEl.dataset.isAuthorized),
   loginUrl: reactAppEl.dataset.loginUrl,
   logoutUrl: reactAppEl.dataset.logoutUrl
 }

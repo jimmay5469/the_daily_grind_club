@@ -1,9 +1,9 @@
 <div
   data-react-app
   data-strava-id="<%= Plug.Conn.get_session(@conn, :strava_id) %>"
+  data-is-authorized="<%= @is_authorized %>"
   data-login-url="<%= strava_login_url %>"
   data-logout-url="<%= Routes.athlete_path(TheDailyGrindClubWeb.Endpoint, :logout) %>"
-  data-athletes="<%= athletes_json(@athletes) %>"
 >
   <div class="hero is-fullheight">
     <div class="hero-body">
