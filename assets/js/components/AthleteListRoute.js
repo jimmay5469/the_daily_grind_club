@@ -56,7 +56,7 @@ const AthleteListRoute = ({
 }) => (
   <div className='athlete-list-route columns is-centered'>
     <div className='column is-three-quarters-widescreen'>
-      {!!athleteList.length && <h3 className='title is-4'>Latest Activity</h3>}
+      {<h3 className='title is-4'>Latest Activity</h3>}
       {athleteList.map(({ stravaId, firstName, lastName, latestActivity, todaySeconds, weekActiveDays, streak, yearSeconds, activityTypes }) => (
         <div key={stravaId} className='athlete-box box is-radiusless'>
           <div className='activity-type-stripe'>
