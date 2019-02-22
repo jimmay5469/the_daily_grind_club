@@ -16,3 +16,7 @@ config :the_daily_grind_club, TheDailyGrindClub.Repo,
   database: "the_daily_grind_club_test",
   hostname: "db",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Custom configuration
+config :the_daily_grind_club, TheDailyGrindClub.Athletes,
+  backend: TheDailyGrindClub.Strava.Backends.Test

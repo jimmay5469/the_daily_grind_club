@@ -2,7 +2,7 @@ defmodule TheDailyGrindClub.Strava do
   alias TheDailyGrindClub.Athletes
   alias TheDailyGrindClub.Athletes.Athlete
 
-  @config Application.get_env(:the_daily_grind_club, __MODULE__)
+  @config Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Athletes)
 
   def get_all_athletes_with_updated_activities do
     Athletes.list_athletes() |> Enum.map(&get_athlete_with_updated_activities/1)

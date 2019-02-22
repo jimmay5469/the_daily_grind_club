@@ -17,15 +17,6 @@ config :the_daily_grind_club, TheDailyGrindClubWeb.Endpoint,
   render_errors: [view: TheDailyGrindClubWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: TheDailyGrindClub.PubSub, adapter: Phoenix.PubSub.PG2]
 
-config :the_daily_grind_club, TheDailyGrindClub.Scheduler,
-  jobs: [
-    {"*/15 * * * *", {TheDailyGrindClub.Athletes, :list_athletes, [sync_activities: true]}}
-  ]
-
-# Custom configuration
-config :the_daily_grind_club, TheDailyGrindClub.Strava,
-  backend: TheDailyGrindClub.Strava.Backends.Strava
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -33,6 +24,18 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Custom configuration
+config :the_daily_grind_club, TheDailyGrindClub.Scheduler,
+  jobs: [
+    {"*/15 * * * *", {TheDailyGrindClub.Athletes, :list_athletes, [sync_activities: true]}}
+  ]
+
+config :the_daily_grind_club, TheDailyGrindClub.Athletes,
+  backend: TheDailyGrindClub.Strava.Backends.Strava,
+  strava_client_id: "",
+  strava_client_secret: "",
+  strava_redirect_url: "https://thedailygrindclub.com/authenticate_strava_athlete"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

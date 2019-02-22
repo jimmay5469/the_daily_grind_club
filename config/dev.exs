@@ -72,4 +72,9 @@ config :the_daily_grind_club, TheDailyGrindClub.Repo,
   hostname: "db",
   pool_size: 10
 
+# Custom configuration
+config :the_daily_grind_club, TheDailyGrindClub.Athletes,
+  backend: TheDailyGrindClub.Strava.Backends.Test,
+  strava_redirect_url: "http://localhost:4000/authenticate_strava_athlete"
+
 import_config "dev.secret.exs"

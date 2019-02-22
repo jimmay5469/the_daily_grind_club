@@ -4,7 +4,7 @@ defmodule TheDailyGrindClub.Strava.Backends.Strava do
   alias TheDailyGrindClub.Athletes
   alias TheDailyGrindClub.Athletes.Athlete
 
-  @config Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Strava)
+  @config Application.get_env(:the_daily_grind_club, TheDailyGrindClub.Athletes)
 
   @impl true
   def fetch_athlete_activities(%Athlete{access_token: nil}), do: nil
