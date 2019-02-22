@@ -12,7 +12,7 @@ defmodule TheDailyGrindClubWeb.AthleteController do
       strava_id ->
         try do
           strava_id
-          |> Athletes.get_athlete_by_strava_id()
+          |> Athletes.get_athlete_by_strava_id!()
           |> Athletes.update_athlete(%{last_visit: NaiveDateTime.utc_now()})
 
           render(conn, "index.html", is_authorized: true)

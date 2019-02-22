@@ -72,7 +72,7 @@ defmodule TheDailyGrindClub.Strava.Backends.Strava do
       try do
         {:ok, athlete} =
           response_body["athlete"]["id"]
-          |> Athletes.get_athlete_by_strava_id()
+          |> Athletes.get_athlete_by_strava_id!()
           |> Athletes.update_athlete(%{
             first_name: response_body["athlete"]["firstname"],
             last_name: response_body["athlete"]["lastname"],
