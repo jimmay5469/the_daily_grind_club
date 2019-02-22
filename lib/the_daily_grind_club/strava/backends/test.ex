@@ -1891,7 +1891,7 @@ defmodule TheDailyGrindClub.Strava.Backends.Test do
 
   @impl true
   def get_oauth_authorization_url() do
-    "/token_exchange?code=test"
+    "/authenticate_strava_athlete?code=test"
   end
 
   @impl true

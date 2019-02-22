@@ -22,7 +22,7 @@ defmodule TheDailyGrindClubWeb.AthleteController do
     end
   end
 
-  def token_exchange(conn, %{"code" => code}) do
+  def authenticate_strava_athlete(conn, %{"code" => code}) do
     conn
     |> put_session(:strava_id, Strava.get_strava_id_by_oauth_code(code))
     |> redirect(to: "/")

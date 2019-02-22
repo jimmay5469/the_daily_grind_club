@@ -32,7 +32,7 @@ defmodule TheDailyGrindClubWeb.Router do
   scope "/", TheDailyGrindClubWeb do
     pipe_through :browser
 
-    get "/token_exchange", AthleteController, :token_exchange
+    get "/authenticate_strava_athlete", AthleteController, :authenticate_strava_athlete
     get "/logout", AthleteController, :logout
     get "/*react_route", AthleteController, :index
   end
