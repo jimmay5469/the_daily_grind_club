@@ -7,6 +7,11 @@ defmodule TheDailyGrindClub.Athletes do
   alias TheDailyGrindClub.Repo
 
   alias TheDailyGrindClub.Athletes.Athlete
+  alias TheDailyGrindClub.Strava
+
+  def strava_login_url do
+    Strava.get_login_url()
+  end
 
   @doc """
   Returns the list of athletes.
@@ -19,6 +24,10 @@ defmodule TheDailyGrindClub.Athletes do
   """
   def list_athletes do
     Repo.all(Athlete)
+  end
+
+  def list_athletes(sync_activities: true) do
+    Strava.get_all_athletes_with_updated_activities()
   end
 
   @doc """
@@ -37,7 +46,43 @@ defmodule TheDailyGrindClub.Athletes do
   """
   def get_athlete!(id), do: Repo.get!(Athlete, id)
 
+  @doc """
+  Gets a single athlete.
+
+  Raises `Ecto.NoResultsError` if the Athlete does not exist.
+
+  ## Examples
+
+      iex> get_athlete_by_strava_id!(123)
+      %Athlete{}
+
+      iex> get_athlete_by_strava_id!(456)
+      ** (Ecto.NoResultsError)
+
+  """
   def get_athlete_by_strava_id!(strava_id), do: Repo.get_by!(Athlete, strava_id: strava_id)
+
+  @doc """
+  Gets a single athlete.
+
+  ## Examples
+
+      iex> get_athlete_by_strava_code(123)
+      {:ok, %Athlete{}}
+
+      iex> get_athlete_by_strava_code(456)
+      {:error, %{strava_id: "789"}}
+
+  """
+  def get_athlete_by_strava_code(strava_code) do
+    strava_id = Strava.get_strava_id_by_oauth_code(strava_code)
+
+    try do
+      {:ok, get_athlete_by_strava_id!(strava_id)}
+    rescue
+      Ecto.NoResultsError -> {:error, %{strava_id: strava_id}}
+    end
+  end
 
   @doc """
   Creates a athlete.

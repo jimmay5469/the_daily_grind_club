@@ -19,7 +19,7 @@ config :the_daily_grind_club, TheDailyGrindClubWeb.Endpoint,
 
 config :the_daily_grind_club, TheDailyGrindClub.Scheduler,
   jobs: [
-    {"*/15 * * * *", {TheDailyGrindClub.Strava, :fetch_all_activities, []}}
+    {"*/15 * * * *", {TheDailyGrindClub.Athletes, :list_athletes, [sync_activities: true]}}
   ]
 
 # Custom configuration

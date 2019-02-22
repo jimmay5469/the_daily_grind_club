@@ -5,7 +5,7 @@ defmodule Mix.Tasks.StravaImport do
     def run(_args) do
       Mix.Task.run("app.start")
 
-      TheDailyGrindClub.Strava.fetch_all_activities()
+      TheDailyGrindClub.Athletes.list_athletes(sync_activities: true)
     end
   end
 end

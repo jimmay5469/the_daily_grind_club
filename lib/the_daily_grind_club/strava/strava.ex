@@ -4,14 +4,15 @@ defmodule TheDailyGrindClub.Strava do
 
   @config Application.get_env(:the_daily_grind_club, __MODULE__)
 
-  def fetch_all_activities do
-    Athletes.list_athletes() |> Enum.each(&fetch_athlete_activities/1)
+  def get_all_athletes_with_updated_activities do
+    Athletes.list_athletes() |> Enum.map(&get_athlete_with_updated_activities/1)
   end
 
-  def fetch_athlete_activities(%Athlete{} = athlete) do
+  def get_athlete_with_updated_activities(%Athlete{} = athlete) do
     athlete = @config[:backend].refresh_access_token(athlete)
     activities = @config[:backend].fetch_athlete_activities(athlete)
-    update_athlete_activities(athlete, activities)
+    {:ok, athlete} = update_athlete_activities(athlete, activities)
+    athlete
   end
 
   def update_athlete_activities(%Athlete{} = athlete, activities) when is_list(activities) do

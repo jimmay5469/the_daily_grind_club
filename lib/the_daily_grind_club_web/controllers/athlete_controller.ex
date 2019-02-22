@@ -2,7 +2,6 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   use TheDailyGrindClubWeb, :controller
 
   alias TheDailyGrindClub.Athletes
-  alias TheDailyGrindClub.Strava
 
   def index(conn, _params) do
     case get_session(conn, :strava_id) do
@@ -23,8 +22,10 @@ defmodule TheDailyGrindClubWeb.AthleteController do
   end
 
   def authenticate_strava_athlete(conn, %{"code" => code}) do
+    {_, %{strava_id: strava_id}} = Athletes.get_athlete_by_strava_code(code)
+
     conn
-    |> put_session(:strava_id, Strava.get_strava_id_by_oauth_code(code))
+    |> put_session(:strava_id, strava_id)
     |> redirect(to: "/")
   end
 
