@@ -1,5 +1,6 @@
 defmodule TheDailyGrindClubWeb.Router do
   use TheDailyGrindClubWeb, :router
+  alias Plug.Conn
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,6 +9,7 @@ defmodule TheDailyGrindClubWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :put_user_token
+    plug :allow_iframe
   end
 
   defp put_user_token(conn, _) do
@@ -17,6 +19,10 @@ defmodule TheDailyGrindClubWeb.Router do
     else
       conn
     end
+  end
+
+  defp allow_iframe(conn, _) do
+    Conn.delete_resp_header(conn, "x-frame-options")
   end
 
   pipeline :api do
