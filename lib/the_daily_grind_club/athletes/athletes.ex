@@ -7,10 +7,11 @@ defmodule TheDailyGrindClub.Athletes do
   alias TheDailyGrindClub.Repo
 
   alias TheDailyGrindClub.Athletes.Athlete
-  alias TheDailyGrindClub.Strava
+
+  @config Application.get_env(:the_daily_grind_club, __MODULE__)
 
   def strava_login_url do
-    Strava.get_login_url()
+    @config[:backend].authorization_url()
   end
 
   @doc """
@@ -27,7 +28,7 @@ defmodule TheDailyGrindClub.Athletes do
   end
 
   def list_athletes(sync_activities: true) do
-    Strava.get_all_athletes_with_updated_activities()
+    list_athletes() |> Enum.map(&get_athlete_with_updated_activities/1)
   end
 
   @doc """
@@ -75,12 +76,23 @@ defmodule TheDailyGrindClub.Athletes do
 
   """
   def get_athlete_by_strava_code(strava_code) do
-    strava_id = Strava.get_strava_id_by_oauth_code(strava_code)
+    access_token = @config[:backend].generate_access_token(strava_code)
 
     try do
-      {:ok, get_athlete_by_strava_id!(strava_id)}
+      get_athlete_by_strava_id!(access_token.strava_id)
+      |> update_access_token(access_token)
+      |> get_athlete_with_updated_activities()
     rescue
-      Ecto.NoResultsError -> {:error, %{strava_id: strava_id}}
+      Ecto.NoResultsError ->
+        strava_athlete = @config[:backend].fetch_athlete(access_token)
+
+        if(Enum.member?(strava_athlete.clubs, 493_369)) do
+          {:ok, athlete} = access_token |> Map.merge(strava_athlete) |> Athletes.create_athlete()
+
+          athlete
+        else
+          {:error, %{strava_id: strava_athlete.strava_id}}
+        end
     end
   end
 
@@ -129,32 +141,25 @@ defmodule TheDailyGrindClub.Athletes do
     {:ok, athlete}
   end
 
-  @doc """
-  Deletes a Athlete.
+  defp update_access_token(%Athlete{} = athlete, access_token) do
+    if(access_token.access_token != athlete.access_token) do
+      {:ok, athlete} = Athletes.update_athlete(athlete, access_token)
+    end
 
-  ## Examples
-
-      iex> delete_athlete(athlete)
-      {:ok, %Athlete{}}
-
-      iex> delete_athlete(athlete)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_athlete(%Athlete{} = athlete) do
-    Repo.delete(athlete)
+    athlete
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking athlete changes.
+  defp get_athlete_with_updated_activities(%Athlete{} = athlete) do
+    access_token = @config[:backend].refresh_access_token(athlete)
+    athlete = update_access_token(athlete, access_token)
+    activities = @config[:backend].fetch_athlete_activities(athlete)
 
-  ## Examples
+    {:ok, athlete} =
+      Athletes.update_athlete(athlete, %{
+        activities: Poison.encode!(activities),
+        last_fetch: NaiveDateTime.utc_now()
+      })
 
-      iex> change_athlete(athlete)
-      %Ecto.Changeset{source: %Athlete{}}
-
-  """
-  def change_athlete(%Athlete{} = athlete) do
-    Athlete.changeset(athlete, %{})
+    athlete
   end
 end

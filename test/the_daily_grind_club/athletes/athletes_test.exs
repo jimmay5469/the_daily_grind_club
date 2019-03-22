@@ -6,9 +6,36 @@ defmodule TheDailyGrindClub.AthletesTest do
   describe "athletes" do
     alias TheDailyGrindClub.Athletes.Athlete
 
-    @valid_attrs %{access_token: "some access_token", access_token_expiration: ~N[2010-04-17 14:00:00], activities: "some activities", first_name: "some first_name", last_fetch: ~N[2010-04-17 14:00:00], last_name: "some last_name", refresh_token: "some refresh_token", strava_id: 42}
-    @update_attrs %{access_token: "some updated access_token", access_token_expiration: ~N[2011-05-18 15:01:01], activities: "some updated activities", first_name: "some updated first_name", last_fetch: ~N[2011-05-18 15:01:01], last_name: "some updated last_name", refresh_token: "some updated refresh_token", strava_id: 43}
-    @invalid_attrs %{access_token: nil, access_token_expiration: nil, activities: nil, first_name: nil, last_fetch: nil, last_name: nil, refresh_token: nil, strava_id: nil}
+    @valid_attrs %{
+      access_token: "some access_token",
+      access_token_expiration: ~N[2010-04-17 14:00:00],
+      activities: "some activities",
+      first_name: "some first_name",
+      last_fetch: ~N[2010-04-17 14:00:00],
+      last_name: "some last_name",
+      refresh_token: "some refresh_token",
+      strava_id: 42
+    }
+    @update_attrs %{
+      access_token: "some updated access_token",
+      access_token_expiration: ~N[2011-05-18 15:01:01],
+      activities: "some updated activities",
+      first_name: "some updated first_name",
+      last_fetch: ~N[2011-05-18 15:01:01],
+      last_name: "some updated last_name",
+      refresh_token: "some updated refresh_token",
+      strava_id: 43
+    }
+    @invalid_attrs %{
+      access_token: nil,
+      access_token_expiration: nil,
+      activities: nil,
+      first_name: nil,
+      last_fetch: nil,
+      last_name: nil,
+      refresh_token: nil,
+      strava_id: nil
+    }
 
     def athlete_fixture(attrs \\ %{}) do
       {:ok, athlete} =
@@ -62,17 +89,6 @@ defmodule TheDailyGrindClub.AthletesTest do
       athlete = athlete_fixture()
       assert {:error, %Ecto.Changeset{}} = Athletes.update_athlete(athlete, @invalid_attrs)
       assert athlete == Athletes.get_athlete!(athlete.id)
-    end
-
-    test "delete_athlete/1 deletes the athlete" do
-      athlete = athlete_fixture()
-      assert {:ok, %Athlete{}} = Athletes.delete_athlete(athlete)
-      assert_raise Ecto.NoResultsError, fn -> Athletes.get_athlete!(athlete.id) end
-    end
-
-    test "change_athlete/1 returns a athlete changeset" do
-      athlete = athlete_fixture()
-      assert %Ecto.Changeset{} = Athletes.change_athlete(athlete)
     end
   end
 end
